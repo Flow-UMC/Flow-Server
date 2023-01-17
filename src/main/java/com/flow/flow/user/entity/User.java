@@ -1,6 +1,7 @@
 package com.flow.flow.user.entity;
 
 import com.flow.flow.detail.entity.Detail;
+import com.flow.flow.keyword.entity.Keyword;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,6 +30,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Detail> details = new ArrayList<>();
+
+    @OneToOne(mappedBy = "user")
+    private Keyword keyword;
 
     @Builder
     public User(String email, String userName, String socialId, SocialType socialType) {
