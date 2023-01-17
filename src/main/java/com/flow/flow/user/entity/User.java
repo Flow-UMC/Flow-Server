@@ -1,8 +1,11 @@
 package com.flow.flow.user.entity;
 
+import com.flow.flow.detail.entity.Detail;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,6 +26,9 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Budget budget;
+
+    @OneToMany(mappedBy = "user")
+    private List<Detail> details = new ArrayList<>();
 
     @Builder
     public User(String email, String userName, String socialId, SocialType socialType) {
