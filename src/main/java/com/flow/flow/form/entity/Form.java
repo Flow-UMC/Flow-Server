@@ -20,12 +20,13 @@ public class Form {
 
     private boolean isExp;
 
-    private String content;
+    private String form;
 
     @Builder
-    public Form(String bankName, boolean isExp, String content) {
+    public Form(String bankName, boolean isExp, String form
+    ) {
         this.bankName = bankName;
         this.isExp = isExp;
-        this.content = content;
+        this.form = form;
     }
 }
