@@ -15,7 +15,7 @@ public class Budget {
     private Long budgetId;
 
     @OneToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
 
     private int price;

@@ -14,7 +14,7 @@ public class Detail {
     private Long detailId;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
 
     private int year;

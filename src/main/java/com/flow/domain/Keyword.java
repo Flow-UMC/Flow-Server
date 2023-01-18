@@ -18,6 +18,6 @@ public class Keyword {
     // category id
 
     @OneToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
 }
