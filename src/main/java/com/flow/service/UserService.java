@@ -1,6 +1,6 @@
-package com.flow.flow.service;
+package com.flow.service;
 
-import com.flow.flow.repository.UserRepository;
+import com.flow.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service

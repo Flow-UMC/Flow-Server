@@ -1,6 +1,6 @@
-package com.flow.flow.repository;
+package com.flow.repository;
 
-import com.flow.flow.domain.Detail;
+import com.flow.domain.Detail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

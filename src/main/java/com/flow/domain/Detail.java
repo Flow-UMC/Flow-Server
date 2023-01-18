@@ -1,6 +1,5 @@
-package com.flow.flow.domain;
+package com.flow.domain;
 
-import com.flow.flow.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

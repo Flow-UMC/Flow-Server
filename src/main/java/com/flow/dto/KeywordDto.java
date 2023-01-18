@@ -1,4 +1,4 @@
-package com.flow.flow.dto;
+package com.flow.dto;
 
 public class KeywordDto {
 }

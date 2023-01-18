@@ -1,4 +1,4 @@
-package com.flow.flow.domain;
+package com.flow.domain;
 
 import org.springframework.http.HttpMethod;
 
