@@ -1,9 +1,9 @@
 package com.flow.domain;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,17 +16,12 @@ public class Form {
     @Id @GeneratedValue
     private Long formId;
 
+    @Column(nullable = false)
     private String bankName;
 
+    @Column(nullable = false)
     private boolean isExp;
 
+    @Column(nullable = false)
     private String form;
-
-    @Builder
-    public Form(String bankName, boolean isExp, String form
-    ) {
-        this.bankName = bankName;
-        this.isExp = isExp;
-        this.form = form;
-    }
 }

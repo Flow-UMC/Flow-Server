@@ -1,6 +1,5 @@
 package com.flow.domain;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,13 +17,9 @@ public class Budget {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(nullable = false)
     private int price;
 
+    @Column(nullable = false)
     private int startDay;
-
-    @Builder
-    public Budget(int price, int startDay) {
-        this.price = price;
-        this.startDay = startDay;
-    }
 }

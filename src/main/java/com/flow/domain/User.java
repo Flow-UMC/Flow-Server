@@ -14,13 +14,14 @@ public class User {
     @Id @GeneratedValue
     private Long userId;
 
+    @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String userName;
 
-    private String socialId;
-
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private SocialType socialType;
 
     @OneToOne(mappedBy = "user")
@@ -34,12 +35,4 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Category> categories = new ArrayList<>();
-
-    @Builder
-    public User(String email, String userName, String socialId, SocialType socialType) {
-        this.email = email;
-        this.userName = userName;
-        this.socialId = socialId;
-        this.socialType = socialType;
-    }
 }
