@@ -32,6 +32,9 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Keyword keyword;
 
+    @OneToMany(mappedBy = "user")
+    private List<Category> categories = new ArrayList<>();
+
     @Builder
     public User(String email, String userName, String socialId, SocialType socialType) {
         this.email = email;

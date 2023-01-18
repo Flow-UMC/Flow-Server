@@ -13,11 +13,13 @@ public class Keyword {
     @Id @GeneratedValue
     private Long keywordId;
 
-    private String keyword;
-
-    // category id
+    @OneToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    private String keyword;
 }

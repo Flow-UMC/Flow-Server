@@ -17,6 +17,10 @@ public class Detail {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     private int year;
 
     private int month;
@@ -29,9 +33,7 @@ public class Detail {
 
     private String shop;
 
-    // category id
-
-    private int typeId;
+    private boolean isExp;
 
     private boolean isIncluded;
 
