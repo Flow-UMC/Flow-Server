@@ -28,16 +28,16 @@ public class Detail {
     private Detail detail;
 
     @Column(nullable = false)
-    private int year;
+    private String year;
 
     @Column(nullable = false)
-    private int month;
+    private String month;
 
     @Column(nullable = false)
-    private int day;
+    private String day;
 
     @Column(nullable = false)
-    private int time;
+    private String time;
 
     @Column(nullable = false)
     private int price;
