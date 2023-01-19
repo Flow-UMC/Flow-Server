@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,6 +22,10 @@ public class Detail {
     @OneToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "integrated_id")
+    private Detail detail;
 
     @Column(nullable = false)
     private int year;
@@ -45,11 +51,12 @@ public class Detail {
     @Column(nullable = false)
     private boolean isIncluded;
 
-    // 통합내역 id
-
     @Column(nullable = false)
     private boolean isChanged;
 
     @Column(nullable = false)
     private String memo;
+
+    @OneToMany(mappedBy = "detail")
+    private List<Detail> integrated = new ArrayList<>();
 }
