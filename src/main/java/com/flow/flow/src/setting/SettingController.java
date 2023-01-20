@@ -1,0 +1,67 @@
+package com.flow.flow.src.setting;
+
+import com.flow.flow.config.BaseException;
+import com.flow.flow.config.BaseResponse;
+import com.flow.flow.src.setting.model.GetFormReq;
+import com.flow.flow.src.setting.model.GetFormRes;
+import com.flow.flow.src.setting.model.PatchBudgetReq;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping("/users")
+public class SettingController {
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private final SettingService settingService;
+    private final SettingProvider settingProvider;
+
+    public SettingController(SettingService settingService, SettingProvider settingProvider) {
+        this.settingService = settingService;
+        this.settingProvider = settingProvider;
+    }
+
+    /**
+     * 예산 금액과 시작일 수정
+     * [PATCH] /users/modifyBudget
+     */
+    @ResponseBody
+    @PatchMapping("/modifyBudget")
+    public BaseResponse<String> modifyBudget(@RequestBody PatchBudgetReq patchBudgetReq, @RequestParam("userId") int userId){
+        try {
+            settingService.modifyBudget(userId, patchBudgetReq);
+
+            String result = "예산이 수정되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 은행앱 추가 선택
+     * [GET] /users/selectForm
+     */
+    @ResponseBody
+    @GetMapping("/selectForms")
+    public BaseResponse<List<GetFormRes>> selectForm(@RequestBody GetFormReq getFormReq){
+        try {
+            List<GetFormRes> getFormRes = new ArrayList<>();
+            for(String s: getFormReq.getBankName()){
+                System.out.println(s);
+                GetFormRes formList = settingProvider.getForm(s);
+                getFormRes.add(formList);
+            }
+
+            return new BaseResponse<>(getFormRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+}
