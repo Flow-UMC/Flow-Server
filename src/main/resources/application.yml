@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/flow
     username: flow
-    password: 1234
+    password: flow1234
 
   jpa:
     hibernate:

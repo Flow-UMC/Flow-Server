@@ -19,8 +19,8 @@ public class SettingDao {
     public void setDataSource(DataSource dataSource) {this.jdbcTemplate = new JdbcTemplate(dataSource);}
 
     public int modifyBudget(int userId, PatchBudgetReq patchBudgetReq){
-        String query = "update budget set price = ? where userId = ?";
-        Object[] params = new Object[]{patchBudgetReq.getBudget(), userId};
+        String query = "update budget set price = ?, startDay = ? where userId = ?";
+        Object[] params = new Object[]{patchBudgetReq.getBudget(), patchBudgetReq.getStartDate(), userId};
 
         return this.jdbcTemplate.update(query, params);
     }
