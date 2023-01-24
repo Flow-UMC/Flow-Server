@@ -1,6 +1,6 @@
-package com.flow.service;
+package com.flow.form.service;
 
-import com.flow.repository.FormRepository;
+import com.flow.form.repository.FormRepository;
 import org.springframework.stereotype.Service;
 
 @Service

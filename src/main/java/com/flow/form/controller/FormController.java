@@ -1,6 +1,6 @@
-package com.flow.controller;
+package com.flow.form.controller;
 
-import com.flow.service.FormService;
+import com.flow.form.service.FormService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

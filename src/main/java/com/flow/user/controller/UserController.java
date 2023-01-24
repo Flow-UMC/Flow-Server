@@ -1,6 +1,6 @@
-package com.flow.controller;
+package com.flow.user.controller;
 
-import com.flow.service.UserService;
+import com.flow.user.service.UserService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
