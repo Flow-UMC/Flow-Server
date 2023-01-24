@@ -44,4 +44,15 @@ public class SettingService {
         }
     }
 
+    public void deleteUser(int userId) throws BaseException{
+        try{
+            int result = settingDao.deleteUser(userId);
+            if(result == 0){
+                throw new BaseException(RESET_FAIL);
+            }
+        } catch(Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }

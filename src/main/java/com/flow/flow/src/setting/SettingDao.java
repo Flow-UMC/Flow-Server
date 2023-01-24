@@ -43,5 +43,23 @@ public class SettingDao {
         return this.jdbcTemplate.update(query, params);
     }
 
+    @Transactional
+    public int deleteUser(int userId){
+        String delDetailQuery = "delete from detail where userId = ?";
+        jdbcTemplate.update(delDetailQuery, userId);
+
+        String delKeywordQuery = "delete from keyword where userId = ?";
+        jdbcTemplate.update(delKeywordQuery, userId);
+
+        String delCategoryQuery = "delete from category where userId = ?";
+        jdbcTemplate.update(delCategoryQuery, userId);
+
+        String delBudgetQuery = "delete from budget where userId = ?";
+        jdbcTemplate.update(delBudgetQuery, userId);
+
+        String delUserQuery = "delete from user where userId = ?";
+        return this.jdbcTemplate.update(delUserQuery, userId);
+    }
+
 }
 

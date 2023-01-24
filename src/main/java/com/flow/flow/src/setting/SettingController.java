@@ -40,7 +40,7 @@ public class SettingController {
             String result = "예산이 수정되었습니다.";
             return new BaseResponse<>(result);
         } catch (BaseException exception){
-            return new BaseResponse<>((exception.getStatus()));
+            return new BaseResponse<>(exception.getStatus());
         }
     }
 
@@ -61,7 +61,7 @@ public class SettingController {
 
             return new BaseResponse<>(getFormRes);
         } catch (BaseException exception){
-            return new BaseResponse<>((exception.getStatus()));
+            return new BaseResponse<>(exception.getStatus());
         }
     }
 
@@ -76,6 +76,23 @@ public class SettingController {
             settingService.resetData(userId);
 
             String result = "모든 거래내역이 삭제되었습니다.";
+            return new BaseResponse<>(result);
+        } catch(BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    /**
+     * 회원 탈퇴
+     * [DELETE] users/deleteUser
+     */
+    @ResponseBody
+    @DeleteMapping("/deleteUser")
+    public BaseResponse<String> deleteUser(@RequestParam("userId") int userId){
+        try{
+            settingService.deleteUser(userId);
+
+            String result = "회원 탈퇴하였습니다.";
             return new BaseResponse<>(result);
         } catch(BaseException exception){
             return new BaseResponse<>(exception.getStatus());
