@@ -1,4 +1,4 @@
-package com.flow.domain;
+package com.flow.form.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
