@@ -1,4 +1,4 @@
-package com.flow.flow.src.calendar.model;
+package com.flow.flow.calendar.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

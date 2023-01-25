@@ -1,4 +1,4 @@
-package com.flow.flow.src.setting.model;
+package com.flow.flow.setting.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

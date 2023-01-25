@@ -1,7 +1,7 @@
-package com.flow.flow.src.setting;
+package com.flow.flow.setting;
 
-import com.flow.flow.src.setting.model.Form;
-import com.flow.flow.src.setting.model.PatchBudgetReq;
+import com.flow.flow.setting.model.Form;
+import com.flow.flow.setting.model.PatchBudgetReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -37,10 +37,11 @@ public class SettingDao {
 
     @Transactional
     public int resetData(int userId){
-        String query = "delete from detail where userId = ?";
-        int params = userId;
+        String delDetailQuery = "delete from detail where userId = ?";
+        jdbcTemplate.update(delDetailQuery, userId);
 
-        return this.jdbcTemplate.update(query, params);
+        String delCategoryQuery = "delete from category where userId = ? and isUserCreated = 1";
+        return this.jdbcTemplate.update(delCategoryQuery, userId);
     }
 
     @Transactional
