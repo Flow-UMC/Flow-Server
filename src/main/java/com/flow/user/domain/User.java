@@ -3,36 +3,34 @@ package com.flow.user.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor
 public class User {
 
-    @Id @GeneratedValue
-    private Long userId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private Long id;
+
+    @Column(nullable = false)
+    private String name;
 
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
-    private String userName;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private SocialType socialType;
+    private AuthProvider provider;
 
     @OneToOne(mappedBy = "user")
     private Budget budget;
 
-    @OneToMany(mappedBy = "user")
-    private List<Detail> details = new ArrayList<>();
-
-    @OneToOne(mappedBy = "user")
-    private Keyword keyword;
-
-    @OneToMany(mappedBy = "user")
-    private List<Category> categories = new ArrayList<>();
+    @Builder
+    public User(String email, String name, AuthProvider provider) {
+        this.email = email;
+        this.name = name;
+        this.provider = provider;
+    }
 }
