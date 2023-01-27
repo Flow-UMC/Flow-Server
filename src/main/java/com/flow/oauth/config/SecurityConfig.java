@@ -13,7 +13,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final OAuthService oAuthService;
-    private final CustomOAuthSuccessHandler customOAuthSuccessHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -22,14 +21,11 @@ public class SecurityConfig {
                 .headers().frameOptions().disable()
                 .and()
 
-                .logout()
-                .logoutSuccessUrl("/")
+                .logout().logoutSuccessUrl("/")
                 .and()
 
                 .oauth2Login()
-                .loginPage("/oauth/login")
-                .failureUrl("/oauth/login")
-                .successHandler(customOAuthSuccessHandler)
+                .defaultSuccessUrl("/oauth/login", true)
                 .userInfoEndpoint()
                 .userService(oAuthService);
 

@@ -1,23 +1,18 @@
 package com.flow.user.domain;
 
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.util.Assert;
 
 import javax.persistence.*;
+
 
 @Entity
 @Getter
 @NoArgsConstructor
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue
     @Column(name = "user_id")
     private Long id;
-
-    @Column(nullable = false)
-    private String oauthId;
 
     @Column(nullable = false)
     private String name;
@@ -28,22 +23,11 @@ public class User {
     @Column(nullable = false)
     private String provider;
 
-    private String isDeleted;
-
-    @CreatedDate
-    private String createdAt;
-
     @OneToOne(mappedBy = "user")
     private Budget budget;
 
     @Builder
-    public User(String oauthId, String name, String email, String provider) {
-        Assert.hasText(oauthId, "oauthId is empty");
-        Assert.hasText(name, "name is empty");
-        Assert.hasText(email, "email is empty");
-        Assert.hasText(provider, "provider is empty");
-
-        this.oauthId = oauthId;
+    public User(String name, String email, String provider) {
         this.name = name;
         this.email = email;
         this.provider = provider;
