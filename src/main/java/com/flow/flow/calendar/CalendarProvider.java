@@ -1,9 +1,9 @@
 package com.flow.flow.calendar;
 
-import com.flow.flow.calendar.model.GetCalendarRes;
-import com.flow.flow.calendar.model.GetTotalAmount;
-import com.flow.flow.calendar.model.GetTranByDateRes;
-import com.flow.flow.calendar.model.Transaction;
+import com.flow.flow.model.GetCalendarRes;
+import com.flow.flow.model.GetTotalAmount;
+import com.flow.flow.model.GetTranByDateRes;
+import com.flow.flow.model.Transaction;
 import com.flow.flow.config.BaseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class CalendarProvider {
     }
 
 
-    public List<GetCalendarRes> getCalendar(int year, int month, int userId) throws BaseException {
+    public List<GetCalendarRes> getCalendar(String year, String month, int userId) throws BaseException {
         try{
             List<GetCalendarRes> getCalendarRes = calendarDao.getCalendar(year, month, userId);
             return getCalendarRes;
@@ -34,7 +34,7 @@ public class CalendarProvider {
         }
     }
 
-    public GetTranByDateRes getTranByDate(int year, int month, int date, int userId) throws BaseException{
+    public GetTranByDateRes getTranByDate(String year, String month, String date, int userId) throws BaseException{
         try{
             List<Transaction> transaction = calendarDao.getTransaction(year, month, date, userId);
             List<GetTotalAmount> getTotalAmount = calendarDao.getTotalAmount(year, month, date, userId);
@@ -44,7 +44,7 @@ public class CalendarProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-    public List<Transaction> getTransaction(int year, int month, int date, int userId) throws BaseException{
+    public List<Transaction> getTransaction(String year, String month, String date, int userId) throws BaseException{
         try{
             List<Transaction> transaction = calendarDao.getTransaction(year, month, date, userId);
             return transaction;

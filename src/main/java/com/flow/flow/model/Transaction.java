@@ -1,4 +1,4 @@
-package com.flow.flow.calendar.model;
+package com.flow.flow.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +13,7 @@ public class Transaction {
     private int isExp;
     private String info;
     private int amount;
-    private Time time;
+    private String time;
     private String memo;
 }
 

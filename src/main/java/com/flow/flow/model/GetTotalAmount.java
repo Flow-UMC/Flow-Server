@@ -1,4 +1,4 @@
-package com.flow.flow.calendar.model;
+package com.flow.flow.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class GetCalendarRes {
-    private int date;
+public class GetTotalAmount {
+    private int total;
     private int isExp;
-    private int amount;
 }
+

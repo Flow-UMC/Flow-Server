@@ -2,8 +2,8 @@
 package com.flow.flow.setting;
 
 import com.flow.flow.config.BaseException;
-import com.flow.flow.setting.model.Form;
-import com.flow.flow.setting.model.GetFormRes;
+import com.flow.flow.model.Form;
+import com.flow.flow.model.GetFormRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

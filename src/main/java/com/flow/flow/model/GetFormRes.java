@@ -1,5 +1,6 @@
-package com.flow.flow.setting.model;
+package com.flow.flow.model;
 
+import com.flow.flow.model.Form;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,8 +1,8 @@
 package com.flow.flow.calendar;
 
-import com.flow.flow.calendar.model.GetCalendarRes;
-import com.flow.flow.calendar.model.GetTranByDateRes;
-import com.flow.flow.calendar.model.Transaction;
+import com.flow.flow.model.GetCalendarRes;
+import com.flow.flow.model.GetTranByDateRes;
+import com.flow.flow.model.Transaction;
 import com.flow.flow.config.BaseException;
 import com.flow.flow.config.BaseResponse;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ public class CalendarController {
      */
     @ResponseBody
     @GetMapping("/{year}/{month}")
-    public BaseResponse<List<GetCalendarRes>> getCalendar(@PathVariable("year") int year, @PathVariable("month") int month, @RequestParam("userId") int userId) {
+    public BaseResponse<List<GetCalendarRes>> getCalendar(@PathVariable("year") String year, @PathVariable("month") String month, @RequestParam("userId") int userId) {
         try {
             List<GetCalendarRes> getCalendarRes = calendarProvider.getCalendar(year, month, userId);
             return new BaseResponse<>(getCalendarRes);
@@ -46,8 +46,8 @@ public class CalendarController {
      */
     @ResponseBody
     @GetMapping("/{year}/{month}/{date}")
-    public BaseResponse<GetTranByDateRes> getTranByDate(@PathVariable("year") int year, @PathVariable("month") int month,
-                                                        @PathVariable("date") int date, @RequestParam("userId") int userId) {
+    public BaseResponse<GetTranByDateRes> getTranByDate(@PathVariable("year") String year, @PathVariable("month") String month,
+                                                        @PathVariable("date") String date, @RequestParam("userId") int userId) {
         try {
             GetTranByDateRes getTranByDateRes = calendarProvider.getTranByDate(year, month, date, userId);
             return new BaseResponse<>(getTranByDateRes);
@@ -58,8 +58,8 @@ public class CalendarController {
 
     @ResponseBody
     @GetMapping("/transaction/{year}/{month}/{date}")
-    public BaseResponse<List<Transaction>> getTotalAmount(@PathVariable("year") int year, @PathVariable("month") int month,
-                                                          @PathVariable("date") int date, @RequestParam("userId") int userId) {
+    public BaseResponse<List<Transaction>> getTotalAmount(@PathVariable("year") String year, @PathVariable("month") String month,
+                                                          @PathVariable("date") String date, @RequestParam("userId") int userId) {
         try {
             List<Transaction> getTransaction = calendarProvider.getTransaction(year, month, date, userId);
             return new BaseResponse<>(getTransaction);
