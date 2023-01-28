@@ -1,9 +1,6 @@
 package com.flow.calendar;
 
-import com.flow.model.GetCalendarRes;
-import com.flow.model.GetTotalAmount;
-import com.flow.model.GetTranByDateRes;
-import com.flow.model.Transaction;
+import com.flow.model.*;
 import com.flow.config.BaseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,14 +41,5 @@ public class CalendarProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-    public List<Transaction> getTransaction(String year, String month, String date, int userId) throws BaseException{
-        try{
-            List<Transaction> transaction = calendarDao.getTransaction(year, month, date, userId);
-            return transaction;
-        } catch(Exception exception){
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
-
 }
 

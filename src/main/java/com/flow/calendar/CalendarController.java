@@ -2,6 +2,7 @@ package com.flow.calendar;
 
 import com.flow.model.GetCalendarRes;
 import com.flow.model.GetTranByDateRes;
+import com.flow.model.Pagination;
 import com.flow.model.Transaction;
 import com.flow.config.BaseException;
 import com.flow.config.BaseResponse;
@@ -51,18 +52,6 @@ public class CalendarController {
         try {
             GetTranByDateRes getTranByDateRes = calendarProvider.getTranByDate(year, month, date, userId);
             return new BaseResponse<>(getTranByDateRes);
-        } catch (BaseException exception) {
-            return new BaseResponse<>((exception.getStatus()));
-        }
-    }
-
-    @ResponseBody
-    @GetMapping("/transaction/{year}/{month}/{date}")
-    public BaseResponse<List<Transaction>> getTotalAmount(@PathVariable("year") String year, @PathVariable("month") String month,
-                                                          @PathVariable("date") String date, @RequestParam("userId") int userId) {
-        try {
-            List<Transaction> getTransaction = calendarProvider.getTransaction(year, month, date, userId);
-            return new BaseResponse<>(getTransaction);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
