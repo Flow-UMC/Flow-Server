@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.flow.model.GetCategoryRes;
+import com.flow.model.PatchCategoryReq;
 import com.flow.model.PostCategoryReq;
 
 @Repository
@@ -40,6 +41,14 @@ public class CategoryDao {
                 rs.getInt("isUserCreated")),
                 getCategoryParams
         );
+    }
+
+    //카테고리 수정
+    public int modifyCategory(int userId, int categoryId, PatchCategoryReq patchCategoryReq) {
+        String modifyCategoryQuery = "update category set name = ?, typeId = ? where userId = ? and categoryId = ?";
+        Object[] modifyCategoryParams = new Object[]{patchCategoryReq.getName(), patchCategoryReq.getTypeId(), userId, categoryId};
+
+        return this.jdbcTemplate.update(modifyCategoryQuery, modifyCategoryParams);
     }
 
 }
