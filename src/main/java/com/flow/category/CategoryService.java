@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.flow.config.BaseException;
 import com.flow.config.BaseResponseStatus;
+import com.flow.model.PatchCategoryReq;
 import com.flow.model.PostCategoryReq;
 
 @Service
@@ -24,6 +25,18 @@ public class CategoryService {
             int result = categoryDao.createCategory(userId, postCategoryReq);
             if (result == 0) {
                 throw new BaseException(BaseResponseStatus.CREATE_FAIL_CATEGORY);
+            }
+        } catch (Exception exception) {
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        }
+    }
+    
+    //카테고리 수정(Patch)
+    public void modifyCategory(int userId, int categoryId, PatchCategoryReq patchCategoryReq) throws BaseException {
+        try {
+            int result = categoryDao.modifyCategory(userId, categoryId, patchCategoryReq);
+            if (result == 0) {
+                throw new BaseException(BaseResponseStatus.MODIFY_FAIL_CATEGORY);
             }
         } catch (Exception exception) {
             throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
