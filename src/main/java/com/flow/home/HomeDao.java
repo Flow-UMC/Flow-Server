@@ -78,4 +78,18 @@ public class HomeDao {
             getCategorysParams);
     }
 
+    //홈 조회 - 월 별 지출 금액
+    public List<Expenditure> getExpenditures(int userId) {
+        String getExpendituresQuery = "select month, sum(price) from detail where userId = ? group by month";
+
+        Object[] getExpenditureParams = new Object[]{userId};
+
+        return this.jdbcTemplate.query(getExpendituresQuery, 
+            (rs, rowNum) -> new Expenditure(
+                rs.getInt("month"),
+                rs.getInt("sum(price)")
+            ),
+            getExpenditureParams);
+    }   
+
 }
