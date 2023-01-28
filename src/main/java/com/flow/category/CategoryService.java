@@ -43,4 +43,17 @@ public class CategoryService {
         }
     }
     
+    //카테고리 삭제(Delete)
+    public void deleteCategory(int userId, int categoryId) throws BaseException {
+        try {
+            int modifyResult = categoryDao.modifyCategoryToEtc(userId, categoryId);
+            int result = categoryDao.deleteCategory(userId, categoryId);
+            if (modifyResult == 0 && result ==0) {
+                throw new BaseException(BaseResponseStatus.RESET_FAIL);
+            }
+        } catch (Exception e) {
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        }
+    }
+    
 }
