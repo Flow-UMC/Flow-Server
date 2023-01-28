@@ -62,4 +62,20 @@ public class HomeDao {
     
     }
 
+    //홈 조회 - 카테고리 별 소비 금액
+    public List<Category> getCategorys(int userId, int month) {
+        String getCategorysQuery = "select categoryId, sum(price) from detail where userId = ? and month = ? group by categoryId";
+        
+        Object[] getCategorysParams = new Object[]{userId, month};
+
+        return this.jdbcTemplate.query(getCategorysQuery, 
+            (rs, rowNum) -> new Category(
+                rs.getInt("categoryId"),
+                getCategoryName(userId, rs.getInt("categoryId")),
+                rs.getInt("sum(price)"),
+                (rs.getInt("sum(price)")/getBudget(userId, month))*100
+        ),
+            getCategorysParams);
+    }
+
 }
