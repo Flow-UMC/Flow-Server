@@ -1,4 +1,4 @@
-package com.flow.flow.category.model;
+package com.flow.model;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
