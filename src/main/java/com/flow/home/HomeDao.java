@@ -100,4 +100,21 @@ public class HomeDao {
 
         return this.jdbcTemplate.queryForObject(getCategoryThisMoneyQuery, int.class, getCategoryThisMoneyParams);
     }
+
+    //카테고리 상세 내역 조회 - 지난 달 카테고리 지출
+    public int getCategoryLastMoney(int userId, int month, int categoryId) {
+        String getCategoryLastMoneyQuery = "select sum(price) from detail where userId = ? and month = ? and categoryId = ?";
+        
+        int lastMonth;
+        if(month == 1) {
+            lastMonth = 12;
+        } else {
+            lastMonth =- 1;
+        }
+
+        Object[] getCategoryLastMoneyParams = new Object[]{userId, lastMonth, categoryId};
+
+        return this.jdbcTemplate.queryForObject(getCategoryLastMoneyQuery, int.class, getCategoryLastMoneyParams);
+    }
+
 }
