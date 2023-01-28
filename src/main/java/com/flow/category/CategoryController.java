@@ -1,8 +1,11 @@
 package com.flow.category;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.flow.config.BaseException;
 import com.flow.config.BaseResponse;
+import com.flow.model.GetCategoryRes;
 import com.flow.model.PostCategoryReq;
 
 
@@ -52,4 +56,16 @@ public class CategoryController {
         }
     }
 
+    //카테고리 목록 조회 API
+    // [GET] /category/:userId
+    @ResponseBody
+    @GetMapping("/{userId}")
+    public BaseResponse<List<GetCategoryRes>> getCategorys(@PathVariable("userId") int userId) {
+        try {
+            List<GetCategoryRes> getCategoryRes = categoryProvider.getCategorys(userId);
+            return new BaseResponse<>(getCategoryRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 }
