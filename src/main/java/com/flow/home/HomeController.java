@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.flow.config.BaseException;
 import com.flow.config.BaseResponse;
+import com.flow.model.GetCategoryDetailRes;
 import com.flow.model.GetHomeRes;
 
 @RestController
@@ -43,6 +44,20 @@ public class HomeController {
         try {
             GetHomeRes getHomeRes = homeProvider.getHome(userId, month);
             return new BaseResponse<>(getHomeRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    //카테고리 상세 내역 조회 API
+    // [GET] /home/:userId/:month/:categoryId
+    @ResponseBody
+    @GetMapping("/{userId}/{month}/{categoryId}")
+    public BaseResponse<GetCategoryDetailRes> getCategoryDetail(@PathVariable("userId") int userId, @PathVariable("month") int month,
+    @PathVariable("categoryId") int categoryId) {
+        try {
+            GetCategoryDetailRes getCategoryDetailRes = homeProvider.getCategoryDetail(userId, month, categoryId);
+            return new BaseResponse<>(getCategoryDetailRes);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
         }
