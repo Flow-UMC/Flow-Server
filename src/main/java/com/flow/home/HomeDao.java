@@ -53,4 +53,13 @@ public class HomeDao {
         return this.jdbcTemplate.queryForObject(getLastConsumptionQuery, int.class, getLastConsumptionParams); 
     }
 
+    //홈 조회 - 카테고리 이름 조회
+    public String getCategoryName(int userId, int categoryId) {
+        String getCategoryNameQuery = "select name from category where userId = ? and categoryId= ?";
+    
+        Object[] getCategoryNameParams = new Object[]{userId, categoryId};
+        return this.jdbcTemplate.queryForObject(getCategoryNameQuery, String.class, getCategoryNameParams);
+    
+    }
+
 }
