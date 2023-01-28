@@ -27,12 +27,4 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Budget budget;
 
-    @OneToMany(mappedBy = "user")
-    private List<Detail> details = new ArrayList<>();
-
-    @OneToOne(mappedBy = "user")
-    private Keyword keyword;
-
-    @OneToMany(mappedBy = "user")
-    private List<Category> categories = new ArrayList<>();
 }
