@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.flow.model.Category;
+import com.flow.model.CategoryDetail;
 import com.flow.model.Expenditure;
 
 
@@ -117,4 +118,20 @@ public class HomeDao {
         return this.jdbcTemplate.queryForObject(getCategoryLastMoneyQuery, int.class, getCategoryLastMoneyParams);
     }
 
+    //카테고리 상세 내역 조회 - 상세 리스트
+    public List<CategoryDetail> getCategoryDetails(int userId, int month, int categoryId) {
+        String getCategoryDetailListQuery = "select day, time, price, shop, memo from detail where userId = ? and month = ? and categoryId = ?";
+
+        Object[] getCategoryDetailListParams = new Object[]{userId, month, categoryId};
+
+        return this.jdbcTemplate.query(getCategoryDetailListQuery, 
+            (rs, rowNum) -> new CategoryDetail(
+                rs.getString("day"),
+                rs.getString("time"),
+                rs.getInt("price"),
+                rs.getString("shop"),
+                rs.getString("memo")
+            ),
+            getCategoryDetailListParams);
+    }
 }
