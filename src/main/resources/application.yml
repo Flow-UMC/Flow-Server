@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    include: db, oauth
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+logging.level:
+  org.hibernate.SQL: debug
