@@ -1,17 +1,17 @@
-package com.flow.flow.calendar;
+package com.flow.calendar;
 
-import com.flow.flow.model.GetCalendarRes;
-import com.flow.flow.model.GetTotalAmount;
-import com.flow.flow.model.GetTranByDateRes;
-import com.flow.flow.model.Transaction;
-import com.flow.flow.config.BaseException;
+import com.flow.model.GetCalendarRes;
+import com.flow.model.GetTotalAmount;
+import com.flow.model.GetTranByDateRes;
+import com.flow.model.Transaction;
+import com.flow.config.BaseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.flow.flow.config.BaseResponseStatus.DATABASE_ERROR;
+import static com.flow.config.BaseResponseStatus.DATABASE_ERROR;
 
 @Service
 public class CalendarProvider {

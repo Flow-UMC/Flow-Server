@@ -1,8 +1,8 @@
-package com.flow.flow.calendar;
+package com.flow.calendar;
 
-import com.flow.flow.model.GetCalendarRes;
-import com.flow.flow.model.GetTotalAmount;
-import com.flow.flow.model.Transaction;
+import com.flow.model.GetCalendarRes;
+import com.flow.model.GetTotalAmount;
+import com.flow.model.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

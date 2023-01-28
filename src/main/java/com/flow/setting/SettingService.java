@@ -1,13 +1,13 @@
-package com.flow.flow.setting;
+package com.flow.setting;
 
-import com.flow.flow.config.BaseException;
-import com.flow.flow.model.PatchBudgetReq;
+import com.flow.config.BaseException;
+import com.flow.model.PatchBudgetReq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.flow.flow.config.BaseResponseStatus.*;
+import static com.flow.config.BaseResponseStatus.*;
 
 @Service
 public class SettingService {

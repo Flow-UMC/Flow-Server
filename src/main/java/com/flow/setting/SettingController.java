@@ -1,10 +1,10 @@
-package com.flow.flow.setting;
+package com.flow.setting;
 
-import com.flow.flow.config.BaseException;
-import com.flow.flow.config.BaseResponse;
-import com.flow.flow.model.GetFormReq;
-import com.flow.flow.model.GetFormRes;
-import com.flow.flow.model.PatchBudgetReq;
+import com.flow.config.BaseException;
+import com.flow.config.BaseResponse;
+import com.flow.model.GetFormReq;
+import com.flow.model.GetFormRes;
+import com.flow.model.PatchBudgetReq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

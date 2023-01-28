@@ -1,7 +1,7 @@
-package com.flow.flow.setting;
+package com.flow.setting;
 
-import com.flow.flow.model.Form;
-import com.flow.flow.model.PatchBudgetReq;
+import com.flow.model.Form;
+import com.flow.model.PatchBudgetReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

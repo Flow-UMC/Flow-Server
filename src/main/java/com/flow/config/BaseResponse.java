@@ -1,12 +1,10 @@
-package com.flow.flow.config;
+package com.flow.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import static com.flow.flow.config.BaseResponseStatus.SUCCESS;
 
 @Getter
 @AllArgsConstructor
@@ -21,9 +19,9 @@ public class BaseResponse<T> {
 
     // 요청 성공
     public BaseResponse(T result) {
-        this.isSuccess = SUCCESS.isSuccess();
-        this.message = SUCCESS.getMessage();
-        this.code = SUCCESS.getCode();
+        this.isSuccess = BaseResponseStatus.SUCCESS.isSuccess();
+        this.message = BaseResponseStatus.SUCCESS.getMessage();
+        this.code = BaseResponseStatus.SUCCESS.getCode();
         this.result = result;
     }
 

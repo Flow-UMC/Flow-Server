@@ -1,4 +1,4 @@
-package com.flow.flow.model;
+package com.flow.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,8 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class GetTotalAmount {
-    private int total;
-    private int isExp;
+public class BaseException extends Exception {
+    private BaseResponseStatus status;
 }
 

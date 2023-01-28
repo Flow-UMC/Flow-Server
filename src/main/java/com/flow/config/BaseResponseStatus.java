@@ -1,4 +1,4 @@
-package com.flow.flow.config;
+package com.flow.config;
 
 import lombok.Getter;
 
