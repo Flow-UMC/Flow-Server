@@ -38,4 +38,19 @@ public class HomeDao {
         return this.jdbcTemplate.queryForObject(getConsumptionQuery, int.class, getConsumptionParams); 
     }
 
+    //홈 조회 - 지난 달 소비 금액
+    public int getLastConsumption(int userId, int month){
+        String getLastConsumptionQuery = "select sum(price) from detail where userId = ? and month = ?";
+
+        int lastMonth;
+        if(month == 1) {
+            lastMonth = 12;
+        } else {
+            lastMonth =- 1;
+        }
+
+        Object[] getLastConsumptionParams = new Object[]{userId, lastMonth};
+        return this.jdbcTemplate.queryForObject(getLastConsumptionQuery, int.class, getLastConsumptionParams); 
+    }
+
 }
