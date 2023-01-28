@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -88,6 +89,24 @@ public class CategoryController {
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    //카테고리 삭제 API
+    // [DELETE] /category/:userId/:categoryId
+    @ResponseBody
+    @DeleteMapping("/{userId}/{categoryId}")
+    public BaseResponse<String> deleteCategory(
+        @PathVariable("userId") int userId,
+        @PathVariable("categoryId") int categoryId
+    ) {
+        try {
+            categoryService.deleteCategory(userId, categoryId);
+
+            String result = "카테고리가 삭제되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException excepton) {
+            return new BaseResponse<>(excepton.getStatus());
         }
     }
 }
