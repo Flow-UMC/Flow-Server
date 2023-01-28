@@ -51,4 +51,21 @@ public class CategoryDao {
         return this.jdbcTemplate.update(modifyCategoryQuery, modifyCategoryParams);
     }
 
+    //카테고리 삭제
+    public int deleteCategory(int userId, int categoryId) {
+        String deleteCategoryQuery = "delete from category where userId = ? and categoryId = ?";
+        Object[] deleteCategoryParams = new Object[]{userId, categoryId};
+
+        return this.jdbcTemplate.update(deleteCategoryQuery, deleteCategoryParams);
+    }
+
+    //카테고리 삭제 - 해당 카테고리 내역 식비로 이동
+    //TODO 식비로 이동 -> 기타로 이동
+    public int modifyCategoryToEtc(int userId, int categoryId) {
+        String modifyCategoryToEtcQuery = "update detail set categoryId = 1 where userId = ? and categoryId = ?";
+        Object[] modifyCategoryToEtcParams = new Object[]{userId, categoryId};
+
+        return this.jdbcTemplate.update(modifyCategoryToEtcQuery, modifyCategoryToEtcParams);
+    }
+
 }
