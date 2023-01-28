@@ -18,13 +18,12 @@ public class DetailDao {
         this.jdbcTemplate=new JdbcTemplate(dataSource);
     }
     
+    public List<Detail> getDetails(Pagination pagination, int userId, String year, String month){
 
-    public List<Detail> getDetails(int userId, String year, String month){
-
-        String getDetailsQuery1="select * from detail where userId=? order by year desc, month desc, day desc, time desc";
-        String getDetailsQuery2="select * from detail where userId=? and year=? and month=? order by day desc, time desc";
+        String getDetailsQuery1="select * from detail where userId=? order by year desc, month desc, day desc, time desc limit ? offset ?";
+        String getDetailsQuery2="select * from detail where userId=? and year=? and month=? order by day desc, time desc limit ? offset ?";
         if(year.equals("all")){
-            int getDetail1Param=userId;
+            Object[] getDetail1Params=new Object[]{userId, pagination.getLimit(), pagination.getOffSet()};
             return this.jdbcTemplate.query(getDetailsQuery1,
                 (rs, rowNum) -> new Detail(
                         rs.getInt("detailId"),
@@ -41,11 +40,11 @@ public class DetailDao {
                         rs.getInt("integratedId"),
                         rs.getBoolean("isChanged"),
                         rs.getString("memo"))
-                        ,getDetail1Param);
+                        ,getDetail1Params);
         }
         int yearParam=Integer.parseInt(year);
         int monthParam=Integer.parseInt(month);
-        Object[] getDetail2Params=new Object[]{userId, yearParam, monthParam};
+        Object[] getDetail2Params=new Object[]{userId, yearParam, monthParam,pagination.getLimit(),pagination.getOffSet()};
         return this.jdbcTemplate.query(getDetailsQuery2,
                 (rs, rowNum) -> new Detail(
                         rs.getInt("detailId"),

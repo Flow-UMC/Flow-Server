@@ -10,7 +10,7 @@ public class DetailProvider {
     @Autowired
     DetailDao detailDao;
 
-    public List<Detail> getDetails(int userId, String year, String month){
-        return detailDao.getDetails(userId, year, month);
+    public List<Detail> getDetails(Pagination pagination, int userId, String year, String month){
+        return detailDao.getDetails(pagination, userId, year, month);
     }
 }

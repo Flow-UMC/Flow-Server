@@ -24,9 +24,11 @@ public class DetailController {
 
     @ResponseBody
     @GetMapping("/{userId}")
-    public BaseResponse<List<Detail>> getDetails(@PathVariable("userId") int userId, @RequestParam String year, @RequestParam String month){
+    public BaseResponse<List<Detail>> getDetails(@PathVariable("userId") int userId, @RequestParam String year, @RequestParam String month, @RequestParam int page){
         //validation 추가
-        List<Detail> details=detailProvider.getDetails(userId, year, month);
+        Pagination pagination = new Pagination();
+        pagination.setPage(page);
+        List<Detail> details=detailProvider.getDetails(pagination, userId, year, month);
         return new BaseResponse<>(details);
     }
 
