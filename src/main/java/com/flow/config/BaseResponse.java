@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import static com.flow.config.BaseResponseStatus.SUCCESS;
+
 @Getter
 @AllArgsConstructor
 @JsonPropertyOrder({"isSuccess", "code", "message", "result"})
@@ -19,9 +21,9 @@ public class BaseResponse<T> {
 
     // 요청 성공
     public BaseResponse(T result) {
-        this.isSuccess = BaseResponseStatus.SUCCESS.isSuccess();
-        this.message = BaseResponseStatus.SUCCESS.getMessage();
-        this.code = BaseResponseStatus.SUCCESS.getCode();
+        this.isSuccess = SUCCESS.isSuccess();
+        this.message = SUCCESS.getMessage();
+        this.code = SUCCESS.getCode();
         this.result = result;
     }
 
