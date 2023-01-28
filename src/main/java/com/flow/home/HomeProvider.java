@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import com.flow.config.BaseException;
 import com.flow.config.BaseResponseStatus;
 import com.flow.model.Category;
+import com.flow.model.CategoryDetail;
 import com.flow.model.Expenditure;
+import com.flow.model.GetCategoryDetailRes;
 import com.flow.model.GetHomeRes;
 
 @Service
@@ -35,6 +37,20 @@ public class HomeProvider {
             return getHomeRes;
 
         } catch (Exception exception) {
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        }
+    }
+
+    //카테고리 상세 내역 조회
+    public GetCategoryDetailRes getCategoryDetail(int userId, int month, int categoryId) throws BaseException{
+        try{
+            int lastMoney = homeDao.getCategoryLastMoney(userId, month, categoryId);
+            int thisMoney = homeDao.getCategoryThisMoney(userId, month, categoryId);
+            List<CategoryDetail> categoryDetails = homeDao.getCategoryDetails(userId, month, categoryId);
+
+            GetCategoryDetailRes getCategoryDetailRes = new GetCategoryDetailRes(lastMoney, thisMoney, categoryDetails);
+            return getCategoryDetailRes;
+        } catch(Exception exception) {
             throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
     }
