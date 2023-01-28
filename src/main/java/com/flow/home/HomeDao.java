@@ -92,4 +92,12 @@ public class HomeDao {
             getExpenditureParams);
     }   
 
+    //카테고리 상세 내역 조회 - 이번 달 카테고리 지출
+    public int getCategoryThisMoney(int userId, int month, int categoryId) {
+        String getCategoryThisMoneyQuery = "select sum(price) from detail where userId = ? and month = ? and categoryId = ?";
+
+        Object[] getCategoryThisMoneyParams = new Object[]{userId, month, categoryId};
+
+        return this.jdbcTemplate.queryForObject(getCategoryThisMoneyQuery, int.class, getCategoryThisMoneyParams);
+    }
 }
