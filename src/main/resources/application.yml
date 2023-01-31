@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    include: oauth
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: ${{ secrets.RDS_URL }}
+        username: ${{ secrets.RDS_USER }}
+        password: ${{ secrets.RDS_PASSWD }}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+logging.level:
+  org.hibernate.SQL: debug
