@@ -1,7 +1,6 @@
 spring:
   profiles:
     include: db, oauth
-
   jpa:
     hibernate:
       ddl-auto: update
