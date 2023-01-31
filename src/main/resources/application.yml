@@ -2,10 +2,10 @@ spring:
   profiles:
     include: oauth
   datasource:
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        url: ${{ secrets.RDS_URL }}
-        username: ${{ secrets.RDS_USER }}
-        password: ${{ secrets.RDS_PASSWD }}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${{ secrets.RDS_URL }}
+    username: ${{ secrets.RDS_USER }}
+    password: ${{ secrets.RDS_PASSWD }}
 
   jpa:
     hibernate:
