@@ -6,6 +6,9 @@ spring:
         url: ${{ secrets.RDS_URL }}
         username: ${{ secrets.RDS_USER }}
         password: ${{ secrets.RDS_PASSWD }}
+        
+server:
+  port: 8080
 
   jpa:
     hibernate:
