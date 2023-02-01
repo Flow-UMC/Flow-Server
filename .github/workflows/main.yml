@@ -33,6 +33,14 @@ jobs:
         spring.datasource.url: ${{ secrets.RDS_URL }} 
         spring.datasource.username: ${{ secrets.RDS_USER }} 
         spring.datasource.password: ${{ secrets.RDS_PASSWD }}
+        spring.security.oauth2.client.registration.google.client-id: ${{ secrets.GOOGLE_ID }}
+        spring.security.oauth2.client.registration.google.client-secret: ${{ secrets.GOOGLE_ID }}
+        spring.security.oauth2.client.registration.kakao.client-id: ${{ secrets.KAKAO_ID }}
+        spring.security.oauth2.client.registration.kakao.client-secret: ${{ secrets.KAKAO_SECRET }}
+        spring.security.oauth2.client.registration.naver.client-id: ${{ secrets.NAVER_ID }}
+        spring.security.oauth2.client.registration.naver.client-secret: ${{ secrets.NAVER_SECRET }}
+        
+        
         
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
