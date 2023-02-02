@@ -28,16 +28,16 @@ public class DetailDao {
                 (rs, rowNum) -> new Detail(
                         rs.getInt("detailId"),
                         rs.getInt("userId"),
+                        rs.getInt("categoryId"),
+                        rs.getInt("integratedId"),
                         rs.getString("year"),
                         rs.getString("month"),
                         rs.getString("day"),
                         rs.getString("time"),
                         rs.getInt("price"),
                         rs.getString("shop"),
-                        rs.getInt("categoryId"),
                         rs.getInt("typeId"),
                         rs.getBoolean("isBudgetIncluded"),
-                        rs.getInt("integratedId"),
                         rs.getBoolean("isChanged"),
                         rs.getString("memo"))
                         ,getDetail1Params);
@@ -49,16 +49,16 @@ public class DetailDao {
                 (rs, rowNum) -> new Detail(
                         rs.getInt("detailId"),
                         rs.getInt("userId"),
+                        rs.getInt("categoryId"),
+                        rs.getInt("integratedId"),
                         rs.getString("year"),
                         rs.getString("month"),
                         rs.getString("day"),
                         rs.getString("time"),
                         rs.getInt("price"),
                         rs.getString("shop"),
-                        rs.getInt("categoryId"),
                         rs.getInt("typeId"),
                         rs.getBoolean("isBudgetIncluded"),
-                        rs.getInt("integratedId"),
                         rs.getBoolean("isChanged"),
                         rs.getString("memo"))
                         ,getDetail2Params
