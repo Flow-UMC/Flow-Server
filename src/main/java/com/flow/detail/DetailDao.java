@@ -66,11 +66,21 @@ public class DetailDao {
     }
 
     public void postDetail(Detail detail){
-        String createDetailQuery = "insert into detail VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        Object[] createDetailParams = new Object[]{detail.getDetailId(),detail.getUserId(),detail.getYear(),detail.getMonth(),
-            detail.getDay(),detail.getTime(),detail.getPrice(),detail.getShop(),detail.getCategoryId(),
-            detail.getTypeId(),detail.getIsBudgetIncluded(),detail.getIntegratedId(),detail.getIsChanged(),detail.getMemo()};
-        this.jdbcTemplate.update(createDetailQuery, createDetailParams);
+        Integer integratedId = detail.getIntegratedId();
+        if(integratedId ==null){
+            String createDetailQuery1 = "insert into detail(detailId, userId, year, month, day, time, price, shop, categoryId, typeId, isBudgetIncluded, isChanged, memo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            Object[] createDetailParams1 = new Object[]{detail.getDetailId(),detail.getUserId(),detail.getYear(),detail.getMonth(),
+                detail.getDay(),detail.getTime(),detail.getPrice(),detail.getShop(),detail.getCategoryId(),
+                detail.getTypeId(),detail.getIsBudgetIncluded(),detail.getIsChanged(),detail.getMemo()};
+            this.jdbcTemplate.update(createDetailQuery1, createDetailParams1);
+        }
+        else{
+            String createDetailQuery2 = "insert into detail(detailId, userId, year, month, day, time, price, shop, categoryId, typeId, isBudgetIncluded, integratedId, isChanged, memo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            Object[] createDetailParams2 = new Object[]{detail.getDetailId(),detail.getUserId(),detail.getYear(),detail.getMonth(),
+                detail.getDay(),detail.getTime(),detail.getPrice(),detail.getShop(),detail.getCategoryId(),
+                detail.getTypeId(),detail.getIsBudgetIncluded(),integratedId,detail.getIsChanged(),detail.getMemo()};
+            this.jdbcTemplate.update(createDetailQuery2, createDetailParams2);
+        }
     }
 
     public void joinDetail(GetJoinDetailRes detailIds){
