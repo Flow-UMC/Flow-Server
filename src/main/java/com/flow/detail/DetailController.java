@@ -3,6 +3,8 @@ package com.flow.detail;
 import com.flow.model.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.flow.config.BaseException;
 import com.flow.config.BaseResponse;
 import static com.flow.config.BaseResponseStatus.*;
@@ -11,6 +13,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/details")
 public class DetailController {
+
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
     
     @Autowired
     private final DetailProvider detailProvider;
