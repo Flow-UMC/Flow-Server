@@ -99,4 +99,25 @@ public class DetailDao {
         this.jdbcTemplate.update(deleteTransQuery,detailParam1);
 
     }
+
+    //상세 내역 조회
+    public GetDetailRes getDetail(int userId, int detailId) {
+        String getDetailQuery = "select * from Detail where userId = ? and detailId = ? ;";
+        int getDetailUserParams = userId;
+        int getDetailParams = detailId;
+        return this.jdbcTemplate.queryForObject(getDetailQuery,
+            (rs, rowNum) -> new GetDetailRes(
+                rs.getString("year"),
+                rs.getString("month"),
+                rs.getString("day"),
+                rs.getString("time"),
+                rs.getInt("price"),
+                rs.getString("shop"),
+                rs.getInt("categoryId"),
+                rs.getString("memo"),
+                rs.getBoolean("isBudgetIncluded"),
+                rs.getInt("integratedId")),
+                getDetailUserParams,getDetailParams);
+    }
+
 }
