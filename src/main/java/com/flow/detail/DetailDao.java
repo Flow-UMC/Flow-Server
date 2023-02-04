@@ -28,16 +28,16 @@ public class DetailDao {
                 (rs, rowNum) -> new Detail(
                         rs.getInt("detailId"),
                         rs.getInt("userId"),
+                        rs.getInt("categoryId"),
+                        rs.getInt("integratedId"),
                         rs.getString("year"),
                         rs.getString("month"),
                         rs.getString("day"),
                         rs.getString("time"),
                         rs.getInt("price"),
                         rs.getString("shop"),
-                        rs.getInt("categoryId"),
                         rs.getInt("typeId"),
                         rs.getBoolean("isBudgetIncluded"),
-                        rs.getInt("integratedId"),
                         rs.getBoolean("isChanged"),
                         rs.getString("memo"))
                         ,getDetail1Params);
@@ -49,16 +49,16 @@ public class DetailDao {
                 (rs, rowNum) -> new Detail(
                         rs.getInt("detailId"),
                         rs.getInt("userId"),
+                        rs.getInt("categoryId"),
+                        rs.getInt("integratedId"),
                         rs.getString("year"),
                         rs.getString("month"),
                         rs.getString("day"),
                         rs.getString("time"),
                         rs.getInt("price"),
                         rs.getString("shop"),
-                        rs.getInt("categoryId"),
                         rs.getInt("typeId"),
                         rs.getBoolean("isBudgetIncluded"),
-                        rs.getInt("integratedId"),
                         rs.getBoolean("isChanged"),
                         rs.getString("memo"))
                         ,getDetail2Params
@@ -66,11 +66,19 @@ public class DetailDao {
     }
 
     public void postDetail(Detail detail){
-        String createDetailQuery = "insert into detail VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        Object[] createDetailParams = new Object[]{detail.getDetailId(),detail.getUserId(),detail.getYear(),detail.getMonth(),
-            detail.getDay(),detail.getTime(),detail.getPrice(),detail.getShop(),detail.getCategoryId(),
-            detail.getTypeId(),detail.getIsBudgetIncluded(),detail.getIntegratedId(),detail.getIsChanged(),detail.getMemo()};
-        this.jdbcTemplate.update(createDetailQuery, createDetailParams);
+        Integer integratedId = detail.getIntegratedId();
+        if(integratedId ==null){
+            String createDetailQuery1 = "insert into detail(detailId, userId, categoryId, year, month, day, time, price, shop, typeId, isBudgetIncluded, isChanged, memo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            Object[] createDetailParams1 = new Object[]{detail.getDetailId(),detail.getUserId(),detail.getCategoryId(),detail.getYear(),detail.getMonth(),
+                detail.getDay(),detail.getTime(),detail.getPrice(),detail.getShop(),detail.getTypeId(),detail.getIsBudgetIncluded(),detail.getIsChanged(),detail.getMemo()};
+            this.jdbcTemplate.update(createDetailQuery1, createDetailParams1);
+        }
+        else{
+            String createDetailQuery2 = "insert into detail VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            Object[] createDetailParams2 = new Object[]{detail.getDetailId(),detail.getUserId(),detail.getCategoryId(),integratedId,detail.getYear(),detail.getMonth(),
+                detail.getDay(),detail.getTime(),detail.getPrice(),detail.getShop(),detail.getTypeId(),detail.getIsBudgetIncluded(),detail.getIsChanged(),detail.getMemo()};
+            this.jdbcTemplate.update(createDetailQuery2, createDetailParams2);
+        }
     }
 
     public void joinDetail(GetJoinDetailRes detailIds){
