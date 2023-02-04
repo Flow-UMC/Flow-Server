@@ -29,8 +29,8 @@ public enum BaseResponseStatus {
     CREATE_FAIL_CATEGORY(false, 4003, "카테고리 추가에 실패하였습니다"),
     MODIFY_FAIL_CATEGORY(false, 4004, "카테고리 변경에 실패하였습니다"),
     MODIFY_FAIL_DETAIL(false, 4005, "상세 내역 변경에 실패하였습니다"),
-    HOME_FAIL_ERROR(false, 4000, "홈 조회에 실패했습니다.");
-    
+    HOME_FAIL_ERROR(false, 4000, "홈 조회에 실패했습니다."),
+    CATEGORY_DETAIL_FAIL_ERROR(false, 4000, "상세 분석 조회에 실패했습니다.");
     
 
     private final boolean isSuccess;
