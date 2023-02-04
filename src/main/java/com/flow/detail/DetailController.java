@@ -30,10 +30,14 @@ public class DetailController {
     @GetMapping("/{userId}")
     public BaseResponse<List<Detail>> getDetails(@PathVariable("userId") int userId, @RequestParam String year, @RequestParam String month, @RequestParam int page){
         //validation 추가
-        Pagination pagination = new Pagination();
-        pagination.setPage(page);
-        List<Detail> details=detailProvider.getDetails(pagination, userId, year, month);
-        return new BaseResponse<>(details);
+        try{
+            Pagination pagination = new Pagination();
+            pagination.setPage(page);
+            List<Detail> details=detailProvider.getDetails(pagination, userId, year, month);
+            return new BaseResponse<>(details);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
     }
 
     @ResponseBody
