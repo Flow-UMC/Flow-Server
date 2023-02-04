@@ -28,7 +28,9 @@ public enum BaseResponseStatus {
     RESET_FAIL(false, 4002, "데이터 삭제에 실패했습니다."),
     CREATE_FAIL_CATEGORY(false, 4003, "카테고리 추가에 실패하였습니다"),
     MODIFY_FAIL_CATEGORY(false, 4004, "카테고리 변경에 실패하였습니다"),
-    MODIFY_FAIL_DETAIL(false, 4005, "상세 내역 변경에 실패하였습니다");
+    MODIFY_FAIL_DETAIL(false, 4005, "상세 내역 변경에 실패하였습니다"),
+    HOME_FAIL_ERROR(false, 4000, "지난 달 데이터가 존재하지 않습니다.");
+    
     
 
     private final boolean isSuccess;

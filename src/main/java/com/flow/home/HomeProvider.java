@@ -37,7 +37,7 @@ public class HomeProvider {
             return getHomeRes;
 
         } catch (Exception exception) {
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+            throw new BaseException(BaseResponseStatus.HOME_FAIL_ERROR);
         }
     }
 
