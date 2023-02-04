@@ -87,4 +87,24 @@ public class DetailController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    //상세 내역 수정 API
+    // [PATCH] /detail/:userId/:detailId
+    @ResponseBody
+    @PatchMapping("/{userId}/{detailId}")
+    public BaseResponse<String> modifyDetail(
+        @PathVariable("userId") int userId,
+        @PathVariable("detailId") int detailId,
+        @RequestBody PatchDetailReq detail
+    ) {
+        try {
+            PatchDetailReq patchDetailReq = new PatchDetailReq(detail.getCategoryId(),detail.getMemo(),detail.getIsBudgetIncluded());
+            detailService.modifyDetail(userId, detailId, patchDetailReq);
+
+            String result = "상세 내역이 수정되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }
