@@ -19,6 +19,7 @@ public enum BaseResponseStatus {
      * 500: server 오류
      */
     SERVER_ERROR(false, 500, "서버 연결에 실패하였습니다."),
+    EXCEPTION_ERROR(false, 5000, "Exception이 발생했습니다."),
 
     /**
      * 4000 : Database, Server 오류

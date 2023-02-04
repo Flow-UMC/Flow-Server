@@ -86,25 +86,21 @@ public class DetailDao {
         int detailParam2=detailIds.getUserId();
         int[] detailParam3=detailIds.getDetailId();
 
-        String joinDetailQuery ="update detail set integratedId = ? where userId= ? and detailId in (";
+        String joinDetailQuery ="update detail set integratedId = ? where userId= ? and detailId = ?";
         for(int id:detailParam3){
-            joinDetailQuery+=Integer.toString(id)+",";
+            Object[] joinDetailParams=new Object[]{detailParam1,detailParam2,id};
+            this.jdbcTemplate.update(joinDetailQuery, joinDetailParams);
         }
-        joinDetailQuery=joinDetailQuery.substring(0,joinDetailQuery.length()-1)+")";
-        Object[] joinDetailParams=new Object[]{detailParam1,detailParam2};
-        this.jdbcTemplate.update(joinDetailQuery, joinDetailParams);
     }
 
     public void deleteDetail(GetDeleteDetailRes detailIds){
         int detailParam1=detailIds.getUserId();
         int[] detailParam2=detailIds.getDetailId();
 
-        String deleteTransQuery="delete from detail where userId =? and detailId in (";
+        String deleteTransQuery="delete from detail where userId =? and detailId = ?";
         for(int id:detailParam2){
-            deleteTransQuery+=Integer.toString(id)+",";
+            Object[] deleteDetailParams=new Object[]{detailParam1,id};
+            this.jdbcTemplate.update(deleteTransQuery,deleteDetailParams);
         }
-        deleteTransQuery=deleteTransQuery.substring(0,deleteTransQuery.length()-1)+")";
-        this.jdbcTemplate.update(deleteTransQuery,detailParam1);
-
     }
 }
