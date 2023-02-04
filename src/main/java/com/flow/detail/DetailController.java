@@ -73,4 +73,18 @@ public class DetailController {
         return new BaseResponse<>(result);
 
     }
+
+    //상세 내역 1개 조회 API
+    // [GET] /details/:userId/:detailId
+    @ResponseBody
+    @GetMapping("/{userId}/{detailId}")
+    public BaseResponse<GetDetailRes> getDetail(@PathVariable("userId") int userId,
+    @PathVariable("detailId") int detailId) {
+        try {
+            GetDetailRes getDetailRes = detailProvider.getDetail(userId, detailId);
+            return new BaseResponse<>(getDetailRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }
