@@ -127,12 +127,13 @@ public class HomeDao {
 
     //카테고리 상세 내역 조회 - 상세 리스트
     public List<CategoryDetail> getCategoryDetails(int userId, int month, int categoryId) {
-        String getCategoryDetailListQuery = "select day, time, price, shop, memo from detail where userId = ? and month = ? and categoryId = ?";
+        String getCategoryDetailListQuery = "select detailId, day, time, price, shop, memo from detail where userId = ? and month = ? and categoryId = ?";
 
         Object[] getCategoryDetailListParams = new Object[]{userId, month, categoryId};
 
         return this.jdbcTemplate.query(getCategoryDetailListQuery, 
             (rs, rowNum) -> new CategoryDetail(
+                rs.getInt("detailId"),
                 rs.getString("day"),
                 rs.getString("time"),
                 rs.getInt("price"),

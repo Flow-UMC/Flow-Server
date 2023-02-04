@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class CategoryDetail {
+    private int detailId;
     private String day;
     private String time;
     private int price;
