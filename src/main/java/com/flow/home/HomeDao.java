@@ -74,7 +74,7 @@ public class HomeDao {
                 rs.getInt("categoryId"),
                 getCategoryName(userId, rs.getInt("categoryId")),
                 rs.getInt("sum(price)"),
-                (rs.getInt("sum(price)")/getBudget(userId, month))*100
+                (rs.getInt("sum(price)")*100/(getBudget(userId, month)))
         ),
             getCategorysParams);
     }
