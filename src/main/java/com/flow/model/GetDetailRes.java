@@ -7,11 +7,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class CategoryDetail {
-    private int detailId;
+public class GetDetailRes {
+    private String year;
+    private String month;
     private String day;
     private String time;
     private int price;
     private String shop;
+    private int categoryId;
     private String memo;
+    private Boolean isBudgetIncluded;
+    private int integratedId;
 }

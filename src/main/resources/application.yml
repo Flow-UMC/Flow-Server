@@ -4,6 +4,7 @@ spring:
     url: ${{ secrets.RDS_URL }}
     username: ${{ secrets.RDS_USER }}
     password: ${{ secrets.RDS_PASSWD }}
+
   security:
     oauth2.client:
       registration:
@@ -51,7 +52,6 @@ spring:
         properties:
           hibernate:
             format_sql: true
-
         
 server:
   port: 8080

@@ -86,25 +86,50 @@ public class DetailDao {
         int detailParam2=detailIds.getUserId();
         int[] detailParam3=detailIds.getDetailId();
 
-        String joinDetailQuery ="update detail set integratedId = ? where userId= ? and detailId in (";
+        String joinDetailQuery ="update detail set integratedId = ? where userId= ? and detailId = ?";
         for(int id:detailParam3){
-            joinDetailQuery+=Integer.toString(id)+",";
+            Object[] joinDetailParams=new Object[]{detailParam1,detailParam2,id};
+            this.jdbcTemplate.update(joinDetailQuery, joinDetailParams);
         }
-        joinDetailQuery=joinDetailQuery.substring(0,joinDetailQuery.length()-1)+")";
-        Object[] joinDetailParams=new Object[]{detailParam1,detailParam2};
-        this.jdbcTemplate.update(joinDetailQuery, joinDetailParams);
     }
 
     public void deleteDetail(GetDeleteDetailRes detailIds){
         int detailParam1=detailIds.getUserId();
         int[] detailParam2=detailIds.getDetailId();
 
-        String deleteTransQuery="delete from detail where userId =? and detailId in (";
+        String deleteTransQuery="delete from detail where userId =? and detailId = ?";
         for(int id:detailParam2){
-            deleteTransQuery+=Integer.toString(id)+",";
+            Object[] deleteDetailParams=new Object[]{detailParam1,id};
+            this.jdbcTemplate.update(deleteTransQuery,deleteDetailParams);
         }
-        deleteTransQuery=deleteTransQuery.substring(0,deleteTransQuery.length()-1)+")";
-        this.jdbcTemplate.update(deleteTransQuery,detailParam1);
-
     }
+
+    //상세 내역 조회
+    public GetDetailRes getDetail(int userId, int detailId) {
+        String getDetailQuery = "select * from Detail where userId = ? and detailId = ? ;";
+        int getDetailUserParams = userId;
+        int getDetailParams = detailId;
+        return this.jdbcTemplate.queryForObject(getDetailQuery,
+            (rs, rowNum) -> new GetDetailRes(
+                rs.getString("year"),
+                rs.getString("month"),
+                rs.getString("day"),
+                rs.getString("time"),
+                rs.getInt("price"),
+                rs.getString("shop"),
+                rs.getInt("categoryId"),
+                rs.getString("memo"),
+                rs.getBoolean("isBudgetIncluded"),
+                rs.getInt("integratedId")),
+                getDetailUserParams,getDetailParams);
+    }
+
+    //상세 내역 변경
+    public int modifyDetail(int userId, int detailId, PatchDetailReq patchDetailReq) {
+        String modifyDetailQuery = "update Detail set categoryId = ?, memo = ?, isBudgetIncluded = ? where userId = ? and detailId = ?;";
+        Object[] modifyDetailParams = new Object[]{patchDetailReq.getCategoryId(), patchDetailReq.getMemo(), patchDetailReq.getIsBudgetIncluded(), userId, detailId};
+
+        return this.jdbcTemplate.update(modifyDetailQuery, modifyDetailParams);
+    }
+
 }

@@ -38,7 +38,7 @@ public class CategoryDao {
                 rs.getInt("categoryId"), 
                 rs.getString("name"), 
                 rs.getInt("typeId"),
-                rs.getInt("isUserCreated")),
+                rs.getBoolean("isUserCreated")),
                 getCategoryParams
         );
     }
