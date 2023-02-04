@@ -1,5 +1,7 @@
 package com.flow.detail;
 
+import com.flow.config.BaseException;
+import com.flow.config.BaseResponseStatus;
 import com.flow.model.*;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,16 @@ public class DetailProvider {
             return detailDao.getDetails(pagination, userId, year, month);
         } catch(Exception exception){
             throw new BaseException(EXCEPTION_ERROR);
+        }
+    }
+
+     //상세 내역 조회
+     public GetDetailRes getDetail(int userId, int detailId) throws BaseException {
+        try {
+            GetDetailRes getDetailRes = detailDao.getDetail(userId, detailId);
+            return getDetailRes;
+        } catch (Exception exception) {
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
     }
 }

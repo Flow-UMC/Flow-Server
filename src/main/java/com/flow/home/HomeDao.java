@@ -41,17 +41,21 @@ public class HomeDao {
 
     //홈 조회 - 지난 달 소비 금액
     public int getLastConsumption(int userId, int month){
-        String getLastConsumptionQuery = "select sum(price) from detail where userId = ? and month = ?";
+        try {
+            String getLastConsumptionQuery = "select sum(price) from detail where userId = ? and month = ?";
 
-        int lastMonth;
-        if(month == 1) {
-            lastMonth = 12;
-        } else {
-            lastMonth =- 1;
+            int lastMonth;
+            if(month == 1) {
+                lastMonth = 12;
+            } else {
+                lastMonth =- 1;
+            }
+
+            Object[] getLastConsumptionParams = new Object[]{userId, lastMonth};
+            return this.jdbcTemplate.queryForObject(getLastConsumptionQuery, int.class, getLastConsumptionParams); 
+        } catch (Exception e) {
+            return 0;
         }
-
-        Object[] getLastConsumptionParams = new Object[]{userId, lastMonth};
-        return this.jdbcTemplate.queryForObject(getLastConsumptionQuery, int.class, getLastConsumptionParams); 
     }
 
     //홈 조회 - 카테고리 이름 조회
@@ -74,7 +78,7 @@ public class HomeDao {
                 rs.getInt("categoryId"),
                 getCategoryName(userId, rs.getInt("categoryId")),
                 rs.getInt("sum(price)"),
-                (rs.getInt("sum(price)")/getBudget(userId, month))*100
+                (rs.getInt("sum(price)")*100/(getBudget(userId, month)))
         ),
             getCategorysParams);
     }
@@ -104,7 +108,8 @@ public class HomeDao {
 
     //카테고리 상세 내역 조회 - 지난 달 카테고리 지출
     public int getCategoryLastMoney(int userId, int month, int categoryId) {
-        String getCategoryLastMoneyQuery = "select sum(price) from detail where userId = ? and month = ? and categoryId = ?";
+        try {
+            String getCategoryLastMoneyQuery = "select sum(price) from detail where userId = ? and month = ? and categoryId = ?";
         
         int lastMonth;
         if(month == 1) {
@@ -114,18 +119,21 @@ public class HomeDao {
         }
 
         Object[] getCategoryLastMoneyParams = new Object[]{userId, lastMonth, categoryId};
-
         return this.jdbcTemplate.queryForObject(getCategoryLastMoneyQuery, int.class, getCategoryLastMoneyParams);
+    } catch (Exception e) {
+            return 0;
+        }
     }
 
     //카테고리 상세 내역 조회 - 상세 리스트
     public List<CategoryDetail> getCategoryDetails(int userId, int month, int categoryId) {
-        String getCategoryDetailListQuery = "select day, time, price, shop, memo from detail where userId = ? and month = ? and categoryId = ?";
+        String getCategoryDetailListQuery = "select detailId, day, time, price, shop, memo from detail where userId = ? and month = ? and categoryId = ?";
 
         Object[] getCategoryDetailListParams = new Object[]{userId, month, categoryId};
 
         return this.jdbcTemplate.query(getCategoryDetailListQuery, 
             (rs, rowNum) -> new CategoryDetail(
+                rs.getInt("detailId"),
                 rs.getString("day"),
                 rs.getString("time"),
                 rs.getInt("price"),

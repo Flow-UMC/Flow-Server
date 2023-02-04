@@ -29,7 +29,7 @@ public class HomeProvider {
             int budget = homeDao.getBudget(userId, month);
             int consumption = homeDao.getConsumption(userId, month);
             int lastConsumption = homeDao.getLastConsumption(userId, month);
-            int percent = (consumption/budget*100);
+            int percent = (consumption*100/budget);
             List<Category> categorys = homeDao.getCategorys(userId, month);
             List<Expenditure> expenditures = homeDao.getExpenditures(userId);
 
@@ -37,7 +37,7 @@ public class HomeProvider {
             return getHomeRes;
 
         } catch (Exception exception) {
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+            throw new BaseException(BaseResponseStatus.HOME_FAIL_ERROR);
         }
     }
 
