@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.flow.config.BaseException;
 import com.flow.config.BaseResponse;
-import static com.flow.config.BaseResponseStatus.*;
 import java.util.List;
 
 @RestController
@@ -43,42 +42,49 @@ public class DetailController {
     @ResponseBody
     @PostMapping("/{userId}")
     public BaseResponse<String> postDetail(@PathVariable("userId") int userId, @RequestBody Detail detail){
-        if(userId==detail.getUserId()){
-            detailService.postDetail(detail);
+        try{
+            detailService.postDetail(userId, detail);
             String result="거래 내역을 생성하였습니다.";
             return new BaseResponse<>(result);
-        } else{
-            return new BaseResponse<>(CHECK_USER_ID);
+        } catch(BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
         }
     }
 
     @ResponseBody
     @PatchMapping("/{userId}/join")
     public BaseResponse<String> joinDetail(@PathVariable("userId") int userId, @RequestBody GetJoinDetailReq detailIds){
-        GetJoinDetailRes getJoinDetailRes = new GetJoinDetailRes(userId, detailIds.getIntegratedId(), detailIds.getDetailId());
-        detailService.joinDetail(getJoinDetailRes);
-        String result="detailId가 ";
-        for(int id:detailIds.getDetailId()){
-            result+=Integer.toString(id)+",";
+        try{
+            GetJoinDetailRes getJoinDetailRes = new GetJoinDetailRes(userId, detailIds.getIntegratedId(), detailIds.getDetailId());
+            detailService.joinDetail(getJoinDetailRes);
+            String result="detailId가 ";
+            for(int id:detailIds.getDetailId()){
+                result+=Integer.toString(id)+",";
+            }
+            result=result.substring(0,result.length()-1);
+            result+="인 내역들의 대표id를 "+Integer.toString(detailIds.getIntegratedId())+"로 업데이트하였습니다.";
+            return new BaseResponse<>(result);
+        } catch(BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
         }
-        result=result.substring(0,result.length()-1);
-        result+="인 내역들의 대표id를 "+Integer.toString(detailIds.getIntegratedId())+"로 업데이트하였습니다.";
-        return new BaseResponse<>(result);
     }
 
     @ResponseBody
     @DeleteMapping("/{userId}")
     public BaseResponse<String> deleteDetail(@PathVariable("userId") int userId, @RequestBody GetDeleteDetailReq detailIds){
-
-        GetDeleteDetailRes getDeleteDetailRes = new GetDeleteDetailRes(userId, detailIds.getDetailId());
-        detailService.deleteDetail(getDeleteDetailRes);
-        String result="detailId가 ";
-        for(int id:detailIds.getDetailId()){
-            result+=Integer.toString(id)+",";
+        try{
+            GetDeleteDetailRes getDeleteDetailRes = new GetDeleteDetailRes(userId, detailIds.getDetailId());
+            detailService.deleteDetail(getDeleteDetailRes);
+            String result="detailId가 ";
+            for(int id:detailIds.getDetailId()){
+                result+=Integer.toString(id)+",";
+            }
+            result=result.substring(0,result.length()-1);
+            result+="인 내역을 삭제하였습니다.";
+            return new BaseResponse<>(result);
+        } catch(BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
         }
-        result=result.substring(0,result.length()-1);
-        result+="인 내역을 삭제하였습니다.";
-        return new BaseResponse<>(result);
 
     }
 }
