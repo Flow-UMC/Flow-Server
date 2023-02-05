@@ -16,6 +16,17 @@ public class KeywordService {
     @Autowired
     KeywordDao keywordDao;
 
+    public void postKeyword(int userId, Keyword keyword) throws BaseException{
+        if(userId!=keyword.getUserId()){
+            throw new BaseException(CHECK_USER_ID);
+        }
+        try{
+            keywordDao.postKeyword(keyword);
+        } catch(Exception exception){
+            throw new BaseException(EXCEPTION_ERROR);
+        }
+    }
+
     public Keyword modifyKeyword(int userId, int keywordId, ModifyKeyword keyword) throws BaseException {
         try{
             return keywordDao.modifyKeyword(userId, keywordId, keyword);

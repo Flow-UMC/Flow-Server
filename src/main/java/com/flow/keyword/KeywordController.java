@@ -38,6 +38,18 @@ public class KeywordController {
     }
 
     @ResponseBody
+    @PostMapping("/{userId}")
+    public BaseResponse<String> postKeyword(@PathVariable("userId") int userId, @RequestBody Keyword keyword){
+        try{
+            keywordService.postKeyword(userId, keyword);
+            String result="키워드를 생성하였습니다.";
+            return new BaseResponse<>(result);
+        } catch(BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
     @PatchMapping("/{userId}/{keywordId}")
     public BaseResponse<Keyword> modifyKeyword(@PathVariable("userId") int userId, @PathVariable("keywordId") int keywordId, @RequestBody ModifyKeyword keyword){
         Integer IntegerCategoryId=keyword.getCategoryId();
