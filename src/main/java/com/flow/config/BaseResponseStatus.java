@@ -12,7 +12,7 @@ public enum BaseResponseStatus {
     /**
      * 2000: request 오류
      */
-    CHECK_USER_ID(false, 2010, "유저 아이디 값을 확인해주세요."),
+    CHECK_USER_ID(false, 2010, "Body와 URI의 유저 아이디 값이 일치하는지 확인해주세요."),
     CHECK_KEYWORD(false, 2020, "키워드 아이디 값이나 키워드 이름을 확인해주세요."),
 
     /**

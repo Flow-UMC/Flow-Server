@@ -22,11 +22,17 @@ public class KeywordDao {
         return this.jdbcTemplate.query(getPostsQuery,
                 (rs, rowNum) -> new Keyword(
                         rs.getInt("keywordId"),
-                        rs.getString("keyword"),
                         rs.getInt("categoryId"),
-                        rs.getInt("userId"))
+                        rs.getInt("userId"),
+                        rs.getString("keyword"))
                         ,getPostParam
         );
+    }
+
+    public void postKeyword(Keyword keyword){
+        String postKeywordQuery="insert into keyword values(?,?,?,?)";
+        Object[] postKeywordParams = new Object[]{keyword.getKeywordId(), keyword.getCategoryId(), keyword.getUserId(), keyword.getKeyword()};
+        this.jdbcTemplate.update(postKeywordQuery, postKeywordParams);
     }
 
     public Keyword modifyKeyword(int userId, int keywordId, ModifyKeyword keyword){
@@ -38,9 +44,9 @@ public class KeywordDao {
         return this.jdbcTemplate.queryForObject(lastUpdatedKeywordIdQuery,
                 (rs, rowNum) -> new Keyword(
                         rs.getInt("keywordId"),
-                        rs.getString("keyword"),
                         rs.getInt("categoryId"),
-                        rs.getInt("userId")),
+                        rs.getInt("userId"),
+                        rs.getString("keyword")),
                         lastUpdatedKeywordParam);
     }
 
