@@ -33,9 +33,8 @@ public class User {
         this.provider = provider;
     }
 
-    public Object update(String name, String email) {
+    public Object update(String name) {
         this.name = name;
-        this.email = email;
         return this;
     }
 }
