@@ -24,9 +24,4 @@ public class OAuthController {
 
         return attributes.toString();
     }
-
-    @GetMapping("/kakao")
-    public @ResponseBody String kakaoCallback(String code) {
-        return "카카오 서버로부터 받은 code 정보 : + code";
-    }
 }
