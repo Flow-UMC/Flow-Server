@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "test_user")
 public class User {
 
     @Id @GeneratedValue
@@ -23,8 +24,8 @@ public class User {
     @Column(nullable = false)
     private String provider;
 
-    @OneToOne(mappedBy = "user")
-    private Budget budget;
+//    @OneToOne(mappedBy = "user")
+//    private Budget budget;
 
     @Builder
     public User(String name, String email, String provider) {

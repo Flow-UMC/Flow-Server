@@ -13,9 +13,9 @@ public class Budget {
     @Id @GeneratedValue
     private Long budgetId;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+//    @OneToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
 
     @Column(nullable = false)
     private int price;
