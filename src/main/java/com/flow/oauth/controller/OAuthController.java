@@ -7,6 +7,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
 
@@ -22,5 +23,10 @@ public class OAuthController {
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
         return attributes.toString();
+    }
+
+    @GetMapping("/kakao")
+    public @ResponseBody String kakaoCallback(String code) {
+        return "카카오 서버로부터 받은 code 정보 : + code";
     }
 }
