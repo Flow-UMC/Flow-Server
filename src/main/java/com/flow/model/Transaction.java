@@ -10,6 +10,9 @@ import java.sql.Time;
 @Setter
 @AllArgsConstructor
 public class Transaction {
+    private int detailId;
+    private int integratedId;
+    private int categoryId;
     private int isExp;
     private String info;
     private int amount;
