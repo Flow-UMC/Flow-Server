@@ -1,21 +1,22 @@
 package com.flow.user.domain;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
-
+@DynamicInsert
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "test_user")
 public class User {
 
-    @Id @GeneratedValue
-    @Column(name = "user_id")
-    private Long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "userId")
+    private int id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10)
     private String name;
 
     @Column(nullable = false)
@@ -24,8 +25,12 @@ public class User {
     @Column(nullable = false)
     private String provider;
 
-//    @OneToOne(mappedBy = "user")
-//    private Budget budget;
+    @Column(nullable = false)
+    @ColumnDefault("false")
+    private boolean isFingerprintOn;
+
+    @OneToOne(mappedBy = "user")
+    private Budget budget;
 
     @Builder
     public User(String name, String email, String provider) {
