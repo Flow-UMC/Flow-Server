@@ -48,8 +48,9 @@ public class CategoryService {
         try {
             int modifyToEtcResult = categoryDao.modifyCategoryToEtc(userId, categoryId);
             int modifyToIncomeResult = categoryDao.modifyCategoryToIncome(userId, categoryId);
+            int deleteKeywordResult = categoryDao.deleteCategoryKeyword(userId, categoryId);
             int result = categoryDao.deleteCategory(userId, categoryId);
-            if (modifyToEtcResult == 0  && modifyToIncomeResult == 0 && result == 0) {
+            if (modifyToEtcResult == 0  && modifyToIncomeResult == 0 && deleteKeywordResult == 0 && result == 0 ) {
                 throw new BaseException(BaseResponseStatus.MODIFY_FAIL_DETAIL);
             }
         } catch (Exception e) {

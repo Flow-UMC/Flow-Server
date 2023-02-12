@@ -75,4 +75,12 @@ public class CategoryDao {
         return this.jdbcTemplate.update(modifyCategoryToIncomeQuery, modifyCategoryToIncomeParams);
     }
 
+    //카테고리 연관 키워드 삭제
+    public int deleteCategoryKeyword(int userId, int categoryId) {
+        String deleteCategoryQuery = "delete from keyword where userId = ? and categoryId = ?";
+        Object[] deleteCategoryParams = new Object[]{userId, categoryId};
+
+        return this.jdbcTemplate.update(deleteCategoryQuery, deleteCategoryParams);
+    }
+
 }
