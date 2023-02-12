@@ -18,6 +18,6 @@ public class Detail {
     private String shop;
     private int typeId;
     private Boolean isBudgetIncluded;
-    private Boolean isChanged;
+    private Boolean isKeywordIncluded;
     private String memo;
 }

@@ -33,9 +33,9 @@ public class CalendarProvider {
 
     public GetTranByDateRes getTranByDate(String year, String month, String date, int userId) throws BaseException{
         try{
-            List<Transaction> transaction = calendarDao.getTransaction(year, month, date, userId);
+            List<Detail> detail = calendarDao.getDetail(year, month, date, userId);
             List<GetTotalAmount> getTotalAmount = calendarDao.getTotalAmount(year, month, date, userId);
-            GetTranByDateRes getTranByDateRes = new GetTranByDateRes(getTotalAmount, transaction) ;
+            GetTranByDateRes getTranByDateRes = new GetTranByDateRes(getTotalAmount, detail);
             return getTranByDateRes;
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);

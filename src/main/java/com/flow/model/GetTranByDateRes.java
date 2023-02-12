@@ -11,5 +11,5 @@ import java.util.List;
 @AllArgsConstructor
 public class GetTranByDateRes {
     private List<GetTotalAmount> totalAmount;
-    private List<Transaction> transaction;
+    private List<Detail> detail;
 }

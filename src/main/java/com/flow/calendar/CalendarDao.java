@@ -1,15 +1,11 @@
 package com.flow.calendar;
 
-import com.flow.model.GetCalendarRes;
-import com.flow.model.GetTotalAmount;
-import com.flow.model.Pagination;
-import com.flow.model.Transaction;
+import com.flow.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.awt.print.Pageable;
 import java.util.List;
 
 @Repository
@@ -46,18 +42,27 @@ public class CalendarDao {
                 getTranParams);
     }
 
-    public List<Transaction> getTransaction(String year, String month, String date, int userId) {
-        String getTranQuery = "select typeId, shop, price, time, memo from detail " +
+    public List<Detail> getDetail(String year, String month, String date, int userId) {
+        String getTranQuery = "select * from detail " +
                 "where userId = ? and year = ? and month = ? and day = ?";
 
         Object[] getTranParams = new Object[]{userId, year, month, date};
 
         return this.jdbcTemplate.query(getTranQuery,
-                (rs, rowNum) -> new Transaction(
-                        rs.getInt("typeId"),
-                        rs.getString("shop"),
-                        rs.getInt("price"),
+                (rs, rowNum) -> new Detail(
+                        rs.getInt("detailId"),
+                        rs.getInt("userId"),
+                        rs.getInt("categoryId"),
+                        rs.getInt("integratedId"),
+                        rs.getString("year"),
+                        rs.getString("month"),
+                        rs.getString("day"),
                         rs.getString("time"),
+                        rs.getInt("price"),
+                        rs.getString("shop"),
+                        rs.getInt("typeId"),
+                        rs.getBoolean("isBudgetIncluded"),
+                        rs.getBoolean("isKeywordIncluded"),
                         rs.getString("memo")),
                 getTranParams);
     }
