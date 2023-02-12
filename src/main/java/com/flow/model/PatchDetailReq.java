@@ -12,7 +12,8 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PatchDetailReq {
     private int categoryId;
-    private String memo;
     private Boolean isBudgetIncluded;
+    private Boolean isKeywordIncluded;
+    private String memo;
 }
 

@@ -25,7 +25,7 @@ public class CategoryProvider {
             List<GetCategoryRes> getCategoryRes = categoryDao.getCategorys(userId);
             return getCategoryRes;
         } catch (Exception exception) {
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+            throw new BaseException(BaseResponseStatus.EXCEPTION_ERROR);
         }
     }
 

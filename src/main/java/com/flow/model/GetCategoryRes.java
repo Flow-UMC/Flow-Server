@@ -11,5 +11,4 @@ public class GetCategoryRes {
     private int categoryId;
     private String name;
     private int typeId;
-    private Boolean isUserCreated;
 }

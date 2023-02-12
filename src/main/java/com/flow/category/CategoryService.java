@@ -27,7 +27,7 @@ public class CategoryService {
                 throw new BaseException(BaseResponseStatus.CREATE_FAIL_CATEGORY);
             }
         } catch (Exception exception) {
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+            throw new BaseException(BaseResponseStatus.EXCEPTION_ERROR);
         }
     }
     
@@ -39,20 +39,22 @@ public class CategoryService {
                 throw new BaseException(BaseResponseStatus.MODIFY_FAIL_CATEGORY);
             }
         } catch (Exception exception) {
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+            throw new BaseException(BaseResponseStatus.EXCEPTION_ERROR);
         }
     }
     
     //카테고리 삭제(Delete)
     public void deleteCategory(int userId, int categoryId) throws BaseException {
         try {
-            int modifyResult = categoryDao.modifyCategoryToEtc(userId, categoryId);
+            int modifyToEtcResult = categoryDao.modifyCategoryToEtc(userId, categoryId);
+            int modifyToIncomeResult = categoryDao.modifyCategoryToIncome(userId, categoryId);
+            int deleteKeywordResult = categoryDao.deleteCategoryKeyword(userId, categoryId);
             int result = categoryDao.deleteCategory(userId, categoryId);
-            if (modifyResult == 0 && result ==0) {
-                throw new BaseException(BaseResponseStatus.RESET_FAIL);
+            if (modifyToEtcResult == 0  && modifyToIncomeResult == 0 && deleteKeywordResult == 0 && result == 0 ) {
+                throw new BaseException(BaseResponseStatus.MODIFY_FAIL_DETAIL);
             }
         } catch (Exception e) {
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+            throw new BaseException(BaseResponseStatus.EXCEPTION_ERROR);
         }
     }
     
