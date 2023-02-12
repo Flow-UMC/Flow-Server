@@ -22,6 +22,15 @@ public enum BaseResponseStatus {
     EXCEPTION_ERROR(false, 5000, "Exception이 발생했습니다."),
 
     /**
+     *  3000: Response 오류
+     */
+    INVALID_USER_ID(false, 3000, "사용자를 찾을 수 없습니다."),
+    INVALID_EMAIL(false, 3001, "존재하지 않는 이메일입니다."),
+    EXIST_EMAIL(false, 3002, "이미 존재하는 이메일입니다."),
+    INVALID_TOKEN(false, 3003, "잘못된 토큰 값입니다."),
+    EXPIRED_TOKEN(false, 3004, "만료된 토큰 값입니다."),
+
+    /**
      * 4000 : Database, Server 오류
      */
     DATABASE_ERROR(false, 4000, "데이터베이스 연결에 실패하였습니다."),
@@ -32,7 +41,7 @@ public enum BaseResponseStatus {
     MODIFY_FAIL_DETAIL(false, 4005, "상세 내역 변경에 실패하였습니다"),
     HOME_FAIL_ERROR(false, 4000, "홈 조회에 실패했습니다."),
     CATEGORY_DETAIL_FAIL_ERROR(false, 4000, "상세 분석 조회에 실패했습니다.");
-    
+
 
     private final boolean isSuccess;
     private final int code;

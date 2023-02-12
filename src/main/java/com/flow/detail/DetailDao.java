@@ -38,7 +38,7 @@ public class DetailDao {
                         rs.getString("shop"),
                         rs.getInt("typeId"),
                         rs.getBoolean("isBudgetIncluded"),
-                        rs.getBoolean("isChanged"),
+                        rs.getBoolean("isKeywordIncluded"),
                         rs.getString("memo"))
                         ,getDetail1Params);
         }
@@ -59,26 +59,27 @@ public class DetailDao {
                         rs.getString("shop"),
                         rs.getInt("typeId"),
                         rs.getBoolean("isBudgetIncluded"),
-                        rs.getBoolean("isChanged"),
+                        rs.getBoolean("isKeywordIncluded"),
                         rs.getString("memo"))
                         ,getDetail2Params
         );
     }
 
-    public void postDetail(Detail detail){
+    public int postDetail(PostDetailReq detail){
         Integer integratedId = detail.getIntegratedId();
-        if(integratedId ==null){
-            String createDetailQuery1 = "insert into detail(detailId, userId, categoryId, year, month, day, time, price, shop, typeId, isBudgetIncluded, isChanged, memo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
-            Object[] createDetailParams1 = new Object[]{detail.getDetailId(),detail.getUserId(),detail.getCategoryId(),detail.getYear(),detail.getMonth(),
-                detail.getDay(),detail.getTime(),detail.getPrice(),detail.getShop(),detail.getTypeId(),detail.getIsBudgetIncluded(),detail.getIsChanged(),detail.getMemo()};
-            this.jdbcTemplate.update(createDetailQuery1, createDetailParams1);
+        String query="select max(detailId) from detail";
+        Integer param=this.jdbcTemplate.queryForObject(query, int.class);
+        if(param==null){
+            param=1;
         }
         else{
-            String createDetailQuery2 = "insert into detail VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-            Object[] createDetailParams2 = new Object[]{detail.getDetailId(),detail.getUserId(),detail.getCategoryId(),integratedId,detail.getYear(),detail.getMonth(),
-                detail.getDay(),detail.getTime(),detail.getPrice(),detail.getShop(),detail.getTypeId(),detail.getIsBudgetIncluded(),detail.getIsChanged(),detail.getMemo()};
-            this.jdbcTemplate.update(createDetailQuery2, createDetailParams2);
+            param++;
         }
+        String createDetailQuery = "insert into detail VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        Object[] createDetailParams = new Object[]{param,detail.getUserId(),detail.getCategoryId(),integratedId,detail.getYear(),detail.getMonth(),
+            detail.getDay(),detail.getTime(),detail.getPrice(),detail.getShop(),detail.getTypeId(),detail.getIsBudgetIncluded(),detail.getIsKeywordIncluded(),detail.getMemo()};
+        this.jdbcTemplate.update(createDetailQuery, createDetailParams);
+        return param;
     }
 
     public void joinDetail(GetJoinDetailRes detailIds){
@@ -126,8 +127,8 @@ public class DetailDao {
 
     //상세 내역 변경
     public int modifyDetail(int userId, int detailId, PatchDetailReq patchDetailReq) {
-        String modifyDetailQuery = "update Detail set categoryId = ?, memo = ?, isBudgetIncluded = ? where userId = ? and detailId = ?;";
-        Object[] modifyDetailParams = new Object[]{patchDetailReq.getCategoryId(), patchDetailReq.getMemo(), patchDetailReq.getIsBudgetIncluded(), userId, detailId};
+        String modifyDetailQuery = "update Detail set categoryId = ?, isBudgetIncluded = ?, isKeywordIncluded = ?, memo = ? where userId = ? and detailId = ?;";
+        Object[] modifyDetailParams = new Object[]{patchDetailReq.getCategoryId(), patchDetailReq.getIsBudgetIncluded(), patchDetailReq.getIsKeywordIncluded(), patchDetailReq.getMemo(), userId, detailId};
 
         return this.jdbcTemplate.update(modifyDetailQuery, modifyDetailParams);
     }
