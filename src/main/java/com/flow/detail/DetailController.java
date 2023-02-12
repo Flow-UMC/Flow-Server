@@ -112,7 +112,7 @@ public class DetailController {
         @RequestBody PatchDetailReq detail
     ) {
         try {
-            PatchDetailReq patchDetailReq = new PatchDetailReq(detail.getCategoryId(),detail.getMemo(),detail.getIsBudgetIncluded());
+            PatchDetailReq patchDetailReq = new PatchDetailReq(detail.getCategoryId(),detail.getIsBudgetIncluded(),detail.getIsKeywordIncluded(),detail.getMemo());
             detailService.modifyDetail(userId, detailId, patchDetailReq);
 
             String result = "상세 내역이 수정되었습니다.";
