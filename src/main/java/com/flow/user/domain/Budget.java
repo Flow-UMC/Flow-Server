@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "budget")
 public class Budget {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
