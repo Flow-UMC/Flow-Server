@@ -27,7 +27,7 @@ public class CategoryService {
                 throw new BaseException(BaseResponseStatus.CREATE_FAIL_CATEGORY);
             }
         } catch (Exception exception) {
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+            throw new BaseException(BaseResponseStatus.EXCEPTION_ERROR);
         }
     }
     
@@ -39,7 +39,7 @@ public class CategoryService {
                 throw new BaseException(BaseResponseStatus.MODIFY_FAIL_CATEGORY);
             }
         } catch (Exception exception) {
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+            throw new BaseException(BaseResponseStatus.EXCEPTION_ERROR);
         }
     }
     
@@ -54,7 +54,7 @@ public class CategoryService {
                 throw new BaseException(BaseResponseStatus.MODIFY_FAIL_DETAIL);
             }
         } catch (Exception e) {
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+            throw new BaseException(BaseResponseStatus.EXCEPTION_ERROR);
         }
     }
     
