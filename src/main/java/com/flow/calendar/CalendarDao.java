@@ -54,6 +54,9 @@ public class CalendarDao {
 
         return this.jdbcTemplate.query(getTranQuery,
                 (rs, rowNum) -> new Transaction(
+                        rs.getInt("detailId"),
+                        rs.getInt("integratedId"),
+                        rs.getInt("categoryId"),
                         rs.getInt("typeId"),
                         rs.getString("shop"),
                         rs.getInt("price"),

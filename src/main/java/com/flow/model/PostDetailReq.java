@@ -1,12 +1,10 @@
 package com.flow.model;
-
 import lombok.*;
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Detail {
-    private int detailId;
+public class PostDetailReq {
     private int userId;
     private int categoryId;
     private int integratedId;

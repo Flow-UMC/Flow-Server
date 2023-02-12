@@ -41,11 +41,10 @@ public class DetailController {
 
     @ResponseBody
     @PostMapping("/{userId}")
-    public BaseResponse<String> postDetail(@PathVariable("userId") int userId, @RequestBody Detail detail){
+    public BaseResponse<PostDetailRes> postDetail(@PathVariable("userId") int userId, @RequestBody PostDetailReq detail){
         try{
-            detailService.postDetail(userId, detail);
-            String result="거래 내역을 생성하였습니다.";
-            return new BaseResponse<>(result);
+            PostDetailRes postDetailRes=detailService.postDetail(userId, detail);
+            return new BaseResponse<>(postDetailRes);
         } catch(BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }

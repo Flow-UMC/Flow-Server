@@ -19,12 +19,13 @@ public class DetailService {
     @Autowired
     DetailDao detailDao;
 
-    public void postDetail(int userId, Detail detail) throws BaseException{
+    public PostDetailRes postDetail(int userId, PostDetailReq detail) throws BaseException{
         if(userId!=detail.getUserId()){
             throw new BaseException(CHECK_USER_ID);
         }
         try{
-            detailDao.postDetail(detail);
+            int detailId=detailDao.postDetail(detail);
+            return new PostDetailRes(detailId);
         } catch(Exception exception){
             throw new BaseException(EXCEPTION_ERROR);
         }
