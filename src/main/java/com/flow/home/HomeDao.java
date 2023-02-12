@@ -25,7 +25,7 @@ public class HomeDao {
 
     //홈 조회 - 예산
     public int getBudget(int userId, int month) {
-        String getBudgetQuery = "select price from budget where user_id = ?";
+        String getBudgetQuery = "select price from budget where userId = ?";
 
         Object[] getBudgetParams = new Object[]{userId};
         return this.jdbcTemplate.queryForObject(getBudgetQuery, int.class, getBudgetParams);
