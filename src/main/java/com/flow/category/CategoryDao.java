@@ -30,15 +30,14 @@ public class CategoryDao {
 
     //카테고리 목록 조회
     public List<GetCategoryRes> getCategorys(int userId) {
-        String getCategoryQuery = "select * from category where userId = ?";
+        String getCategoryQuery = "select * from category where userId = ? and isUserCreated = true";
         Object[] getCategoryParams = new Object[]{userId};
 
         return this.jdbcTemplate.query(getCategoryQuery, 
             (rs, rowNum) -> new GetCategoryRes(
                 rs.getInt("categoryId"), 
                 rs.getString("name"), 
-                rs.getInt("typeId"),
-                rs.getBoolean("isUserCreated")),
+                rs.getInt("typeId")),
                 getCategoryParams
         );
     }
