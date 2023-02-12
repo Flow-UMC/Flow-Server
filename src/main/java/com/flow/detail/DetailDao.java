@@ -65,20 +65,21 @@ public class DetailDao {
         );
     }
 
-    public void postDetail(Detail detail){
+    public int postDetail(PostDetailReq detail){
         Integer integratedId = detail.getIntegratedId();
-        if(integratedId ==null){
-            String createDetailQuery1 = "insert into detail(detailId, userId, categoryId, year, month, day, time, price, shop, typeId, isBudgetIncluded, isKeywordIncluded, memo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
-            Object[] createDetailParams1 = new Object[]{detail.getDetailId(),detail.getUserId(),detail.getCategoryId(),detail.getYear(),detail.getMonth(),
-                detail.getDay(),detail.getTime(),detail.getPrice(),detail.getShop(),detail.getTypeId(),detail.getIsBudgetIncluded(),detail.getIsKeywordIncluded(),detail.getMemo()};
-            this.jdbcTemplate.update(createDetailQuery1, createDetailParams1);
+        String query="select max(detailId) from detail";
+        Integer param=this.jdbcTemplate.queryForObject(query, int.class);
+        if(param==null){
+            param=1;
         }
         else{
-            String createDetailQuery2 = "insert into detail VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-            Object[] createDetailParams2 = new Object[]{detail.getDetailId(),detail.getUserId(),detail.getCategoryId(),integratedId,detail.getYear(),detail.getMonth(),
-                detail.getDay(),detail.getTime(),detail.getPrice(),detail.getShop(),detail.getTypeId(),detail.getIsBudgetIncluded(),detail.getIsKeywordIncluded(),detail.getMemo()};
-            this.jdbcTemplate.update(createDetailQuery2, createDetailParams2);
+            param++;
         }
+        String createDetailQuery = "insert into detail VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        Object[] createDetailParams = new Object[]{param,detail.getUserId(),detail.getCategoryId(),integratedId,detail.getYear(),detail.getMonth(),
+            detail.getDay(),detail.getTime(),detail.getPrice(),detail.getShop(),detail.getTypeId(),detail.getIsBudgetIncluded(),detail.getIsKeywordIncluded(),detail.getMemo()};
+        this.jdbcTemplate.update(createDetailQuery, createDetailParams);
+        return param;
     }
 
     public void joinDetail(GetJoinDetailRes detailIds){
