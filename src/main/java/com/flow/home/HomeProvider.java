@@ -31,7 +31,7 @@ public class HomeProvider {
             int lastConsumption = homeDao.getLastConsumption(userId, month);
             int percent = (consumption*100/budget);
             List<Category> categorys = homeDao.getCategorys(userId, month);
-            List<Expenditure> expenditures = homeDao.getExpenditures(userId);
+            List<Expenditure> expenditures = homeDao.getExpenditures(userId, month);
 
             GetHomeRes getHomeRes = new GetHomeRes(budget, consumption, lastConsumption, percent, categorys, expenditures);
             return getHomeRes;
