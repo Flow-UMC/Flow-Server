@@ -107,7 +107,7 @@ public class DetailDao {
 
     //상세 내역 조회
     public GetDetailRes getDetail(int userId, int detailId) {
-        String getDetailQuery = "select * from Detail where userId = ? and detailId = ?";
+        String getDetailQuery = "select * from detail where userId = ? and detailId = ?";
         int getDetailUserParams = userId;
         int getDetailParams = detailId;
         return this.jdbcTemplate.queryForObject(getDetailQuery,
@@ -127,7 +127,7 @@ public class DetailDao {
 
     //상세 내역 변경
     public int modifyDetail(int userId, int detailId, PatchDetailReq patchDetailReq) {
-        String modifyDetailQuery = "update Detail set categoryId = ?, isBudgetIncluded = ?, isKeywordIncluded = ?, memo = ? where userId = ? and detailId = ?";
+        String modifyDetailQuery = "update detail set categoryId = ?, isBudgetIncluded = ?, isKeywordIncluded = ?, memo = ? where userId = ? and detailId = ?";
         Object[] modifyDetailParams = new Object[]{patchDetailReq.getCategoryId(), patchDetailReq.getIsBudgetIncluded(), patchDetailReq.getIsKeywordIncluded(), patchDetailReq.getMemo(), userId, detailId};
 
         return this.jdbcTemplate.update(modifyDetailQuery, modifyDetailParams);
