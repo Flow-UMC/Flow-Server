@@ -86,15 +86,26 @@ public class HomeDao {
                 rs.getInt("categoryId"),
                 getCategoryName(userId, rs.getInt("categoryId")),
                 rs.getInt("sum(price)"),
-                (rs.getInt("sum(price)")*100/(getBudget(userId, month)))
+                (rs.getInt("sum(price)")*100/(getConsumption(userId, month)))
         ),
             getCategorysParams);
     }
 
     //홈 조회 - 월 별 지출 금액
-    public List<Expenditure> getExpenditures(int userId) {
-        String getExpendituresQuery = "select month, sum(price) from detail where userId = ? group by month";
+    public List<Expenditure> getExpenditures(int userId, int month) {
+        
+        String getExpendituresQuery;
 
+        if(month == 2) {
+            getExpendituresQuery = "select month, sum(price) from detail where userId = ? and month = 1 or month = 2 group by month order by month";
+        }
+        else if(month < 8) {
+            getExpendituresQuery = "select month, sum(price) from detail where userId = ? and month >= 1 and month <= 7 group by month order by month";
+        } 
+        else {
+            getExpendituresQuery = "select month, sum(price) from detail where userId = ? and month >= 6 and month <= 12 group by month order by month asc";
+        }
+        
         Object[] getExpenditureParams = new Object[]{userId};
 
         return this.jdbcTemplate.query(getExpendituresQuery, 

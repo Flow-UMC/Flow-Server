@@ -33,7 +33,7 @@ public class DetailProvider {
             GetDetailRes getDetailRes = detailDao.getDetail(userId, detailId);
             return getDetailRes;
         } catch (Exception exception) {
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+            throw new BaseException(BaseResponseStatus.EXCEPTION_ERROR);
         }
     }
 }

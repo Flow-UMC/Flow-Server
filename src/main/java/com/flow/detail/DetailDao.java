@@ -87,10 +87,13 @@ public class DetailDao {
         int detailParam2=detailIds.getUserId();
         int[] detailParam3=detailIds.getDetailId();
 
-        String joinDetailQuery ="update detail set integratedId = ? where userId= ? and detailId = ?";
+        String joinDetailQuery1 ="update detail set integratedId = ? where userId= ? and detailId = ?";
+        String joinDetailQuery2 ="update detail set integratedId = ? where userId= ? and integratedId = ?";
         for(int id:detailParam3){
-            Object[] joinDetailParams=new Object[]{detailParam1,detailParam2,id};
-            this.jdbcTemplate.update(joinDetailQuery, joinDetailParams);
+            Object[] joinDetailParams1=new Object[]{detailParam1,detailParam2,id};
+            Object[] joinDetailParams2=new Object[]{detailParam1,detailParam2,id};
+            this.jdbcTemplate.update(joinDetailQuery1, joinDetailParams1);
+            this.jdbcTemplate.update(joinDetailQuery2, joinDetailParams2); 
         }
     }
 
@@ -98,16 +101,19 @@ public class DetailDao {
         int detailParam1=detailIds.getUserId();
         int[] detailParam2=detailIds.getDetailId();
 
-        String deleteTransQuery="delete from detail where userId =? and detailId = ?";
+        String deleteTransQuery1="delete from detail where userId =? and detailId = ?";
+        String deleteTransQuery2="delete from detail where userId =? and integratedId = ?";
         for(int id:detailParam2){
-            Object[] deleteDetailParams=new Object[]{detailParam1,id};
-            this.jdbcTemplate.update(deleteTransQuery,deleteDetailParams);
+            Object[] deleteDetailParams1=new Object[]{detailParam1,id};
+            Object[] deleteDetailParams2=new Object[]{detailParam1,id};
+            this.jdbcTemplate.update(deleteTransQuery1,deleteDetailParams1);
+            this.jdbcTemplate.update(deleteTransQuery2,deleteDetailParams2);
         }
     }
 
     //상세 내역 조회
     public GetDetailRes getDetail(int userId, int detailId) {
-        String getDetailQuery = "select * from Detail where userId = ? and detailId = ? ;";
+        String getDetailQuery = "select * from detail where userId = ? and detailId = ?";
         int getDetailUserParams = userId;
         int getDetailParams = detailId;
         return this.jdbcTemplate.queryForObject(getDetailQuery,
@@ -127,8 +133,8 @@ public class DetailDao {
 
     //상세 내역 변경
     public int modifyDetail(int userId, int detailId, PatchDetailReq patchDetailReq) {
-        String modifyDetailQuery = "update Detail set categoryId = ?, memo = ?, isBudgetIncluded = ? where userId = ? and detailId = ?;";
-        Object[] modifyDetailParams = new Object[]{patchDetailReq.getCategoryId(), patchDetailReq.getMemo(), patchDetailReq.getIsBudgetIncluded(), userId, detailId};
+        String modifyDetailQuery = "update detail set categoryId = ?, isBudgetIncluded = ?, isKeywordIncluded = ?, memo = ? where userId = ? and detailId = ?";
+        Object[] modifyDetailParams = new Object[]{patchDetailReq.getCategoryId(), patchDetailReq.getIsBudgetIncluded(), patchDetailReq.getIsKeywordIncluded(), patchDetailReq.getMemo(), userId, detailId};
 
         return this.jdbcTemplate.update(modifyDetailQuery, modifyDetailParams);
     }

@@ -55,7 +55,7 @@ public class DetailService {
                     throw new BaseException(BaseResponseStatus.MODIFY_FAIL_DETAIL);
                 }
             } catch (Exception exception) {
-                throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+                throw new BaseException(BaseResponseStatus.EXCEPTION_ERROR);
             }
         }
 }
