@@ -1,5 +1,6 @@
 package com.flow.home;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -103,30 +104,34 @@ public class HomeDao {
 
     }
 
-    //홈 조회 - 월 별 지출 금액
-    public List<Expenditure> getExpenditures(int userId, int month) {
+     //홈 조회 - 월 별 지출 금액
+     public List<Expenditure> getExpenditures(int userId, int month) {
         
-        String getExpendituresQuery;
+        List<Expenditure> resultList = new ArrayList<>();
 
-        if(month == 2) {
-            getExpendituresQuery = "select month, sum(price) from(select month, -sum(price) as price from (select month, if (typeId = 2, price, -price) as price from detail where userId = ? and month = 1 or month = 2 and isBudgetIncluded = 1 and integratedId != -1) price_tb group by month union all select month, sum(price) from detail where userId = ? and month = 1 or month = 2 and typeId = 1 and integratedId = -1 and isBudgetIncluded = 1 group by month) last_tb group by month";
+        if(month == 2){
+            resultList.add(new Expenditure(1, getConsumption(userId, 1)-getIntegratedConsumption(userId, 1)));
+            resultList.add(new Expenditure(2, getConsumption(userId, 2)-getIntegratedConsumption(userId, 2)));
         }
-        else if(month < 8) {
-            getExpendituresQuery = "select month, sum(price) from(select month, -sum(price) as price from (select month, if (typeId = 2, price, -price) as price from detail where userId = ? and month >= 1 and month <= 7 and isBudgetIncluded = 1 and integratedId != -1) price_tb group by month union all select month, sum(price) from detail where userId = ? and month >= 1 and month <= 7 and typeId = 1 and integratedId = -1 and isBudgetIncluded = 1 group by month) last_tb group by month;";
-            
-        } 
+        else if (month < 8) {
+            resultList.add(new Expenditure(1, getConsumption(userId, 1)-getIntegratedConsumption(userId, 1)));
+            resultList.add(new Expenditure(2, getConsumption(userId, 2)-getIntegratedConsumption(userId, 2)));
+            resultList.add(new Expenditure(3, getConsumption(userId, 3)-getIntegratedConsumption(userId, 3)));
+            resultList.add(new Expenditure(4, getConsumption(userId, 4)-getIntegratedConsumption(userId, 4)));
+            resultList.add(new Expenditure(5, getConsumption(userId, 5)-getIntegratedConsumption(userId, 5)));
+            resultList.add(new Expenditure(6, getConsumption(userId, 6)-getIntegratedConsumption(userId, 6)));
+            resultList.add(new Expenditure(7, getConsumption(userId, 7)-getIntegratedConsumption(userId, 7)));
+        }
         else {
-            getExpendituresQuery = "select month, sum(price) from(select month, -sum(price) as price from (select month, if (typeId = 2, price, -price) as price from detail where userId = ? and month >= 6 and month <= 12 and isBudgetIncluded = 1 and integratedId != -1) price_tb group by month union all select month, sum(price) from detail where userId = ? and month >= 6 and month <= 12 and typeId = 1 and integratedId = -1 and isBudgetIncluded = 1 group by month) last_tb group by month;";
+            resultList.add(new Expenditure(6, getConsumption(userId, 6)-getIntegratedConsumption(userId, 6)));
+            resultList.add(new Expenditure(7, getConsumption(userId, 7)-getIntegratedConsumption(userId, 7)));
+            resultList.add(new Expenditure(8, getConsumption(userId, 8)-getIntegratedConsumption(userId, 8)));
+            resultList.add(new Expenditure(9, getConsumption(userId, 9)-getIntegratedConsumption(userId, 9)));
+            resultList.add(new Expenditure(10, getConsumption(userId, 10)-getIntegratedConsumption(userId, 10)));
+            resultList.add(new Expenditure(11, getConsumption(userId, 11)-getIntegratedConsumption(userId, 11)));
+            resultList.add(new Expenditure(12, getConsumption(userId, 12)-getIntegratedConsumption(userId, 12)));
         }
-        
-        Object[] getExpenditureParams = new Object[]{userId, userId};
-
-        return this.jdbcTemplate.query(getExpendituresQuery, 
-            (rs, rowNum) -> new Expenditure(
-                rs.getInt("month"),
-                rs.getInt("sum(price)")
-            ),
-            getExpenditureParams);
+        return resultList;
     }   
 
     //카테고리 상세 내역 조회 - 이번 달 카테고리 지출
