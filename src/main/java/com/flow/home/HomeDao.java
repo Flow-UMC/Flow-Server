@@ -109,13 +109,14 @@ public class HomeDao {
         String getExpendituresQuery;
 
         if(month == 2) {
-            getExpendituresQuery = "select month, sum(price) from detail where userId = ? and month = 1 or month = 2 group by month order by month";
+            getExpendituresQuery = "select month, sum(price) from(select month, -sum(price) as price from (select month, if (typeId = 2, price, -price) as price from detail where userId = ? and month = 1 or month = 2 and isBudgetIncluded = 1 and integratedId != -1) price_tb group by month union all select month, sum(price) from detail where userId = ? and month = 1 or month = 2 and typeId = 1 and integratedId = -1 and isBudgetIncluded = 1 group by month) last_tb group by month";
         }
         else if(month < 8) {
-            getExpendituresQuery = "select month, sum(price) from detail where userId = ? and month >= 1 and month <= 7 group by month order by month";
+            getExpendituresQuery = "select month, sum(price) from(select month, -sum(price) as price from (select month, if (typeId = 2, price, -price) as price from detail where userId = ? and month >= 1 and month <= 7 and isBudgetIncluded = 1 and integratedId != -1) price_tb group by month union all select month, sum(price) from detail where userId = ? and month >= 1 and month <= 7 and typeId = 1 and integratedId = -1 and isBudgetIncluded = 1 group by month) last_tb group by month;";
+            
         } 
         else {
-            getExpendituresQuery = "select month, sum(price) from detail where userId = ? and month >= 6 and month <= 12 group by month order by month asc";
+            getExpendituresQuery = "select month, sum(price) from(select month, -sum(price) as price from (select month, if (typeId = 2, price, -price) as price from detail where userId = ? and month >= 6 and month <= 12 and isBudgetIncluded = 1 and integratedId != -1) price_tb group by month union all select month, sum(price) from detail where userId = ? and month >= 6 and month <= 12 and typeId = 1 and integratedId = -1 and isBudgetIncluded = 1 group by month) last_tb group by month;";
         }
         
         Object[] getExpenditureParams = new Object[]{userId};
