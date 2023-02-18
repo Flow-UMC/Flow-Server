@@ -44,8 +44,8 @@ public class HomeProvider {
     //카테고리 상세 내역 조회
     public GetCategoryDetailRes getCategoryDetail(int userId, int month, int categoryId) throws BaseException{
         try{
-            int lastMoney = homeDao.getCategoryLastMoney(userId, month, categoryId);
-            int thisMoney = homeDao.getCategoryThisMoney(userId, month, categoryId);
+            int lastMoney = homeDao.getCategoryLastConsumption(userId, month, categoryId);
+            int thisMoney = homeDao.getCategoryThisMoney(userId, month, categoryId) - homeDao.getCategoryThisIntegratedMoney(userId, month, categoryId);
             List<CategoryDetail> categoryDetails = homeDao.getCategoryDetails(userId, month, categoryId);
 
             GetCategoryDetailRes getCategoryDetailRes = new GetCategoryDetailRes(lastMoney, thisMoney, categoryDetails);

@@ -129,31 +129,41 @@ public class HomeDao {
     }   
 
     //카테고리 상세 내역 조회 - 이번 달 카테고리 지출
-    public int getCategoryThisMoney(int userId, int month, int categoryId) {
-        String getCategoryThisMoneyQuery = "select sum(price) from detail where userId = ? and month = ? and categoryId = ?";
+    public int getCategoryThisMoney(int userId, int month, int categoryId){
+        try {
+            String getConsumptionQuery = "select sum(price) from detail where userId = ? and month = ? and categoryId = ? and typeId = 1 and integratedId = -1 and isBudgetIncluded = 1";
+    
+            Object[] getConsumptionParams = new Object[]{userId, month, categoryId};
+            return this.jdbcTemplate.queryForObject(getConsumptionQuery, int.class, getConsumptionParams); 
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+
+    //카테고리 상세 내역 조회 - 이번 달 카테고리 통합 내역 지출
+    public int getCategoryThisIntegratedMoney(int userId, int month, int categoryId) {
+        try {
+            String getCategoryThisMoneyQuery = "select sum(price) from (select sum(price) as price from (select integratedId, if (typeId = 2, price, -price) as price from detail where userId = ? and month = ? and categoryId = ? and isBudgetIncluded = 1 and integratedId != -1) price_table group by integratedId) expend_table where price < 0";
 
         Object[] getCategoryThisMoneyParams = new Object[]{userId, month, categoryId};
 
         return this.jdbcTemplate.queryForObject(getCategoryThisMoneyQuery, int.class, getCategoryThisMoneyParams);
-    }
-
-    //카테고리 상세 내역 조회 - 지난 달 카테고리 지출
-    public int getCategoryLastMoney(int userId, int month, int categoryId) {
-        try {
-            String getCategoryLastMoneyQuery = "select sum(price) from detail where userId = ? and month = ? and categoryId = ?";
-        
-        int lastMonth;
-        if(month == 1) {
-            lastMonth = 12;
-        } else {
-            lastMonth =- 1;
-        }
-
-        Object[] getCategoryLastMoneyParams = new Object[]{userId, lastMonth, categoryId};
-        return this.jdbcTemplate.queryForObject(getCategoryLastMoneyQuery, int.class, getCategoryLastMoneyParams);
-    } catch (Exception e) {
+        } catch (Exception e) {
             return 0;
         }
+    
+    }
+    
+    //카테고리 상세 내역 조회  - 지난 달 카테고리 소비 금액
+    public int getCategoryLastConsumption(int userId, int month, int categoryId){
+        int lastMonth;
+        if (month == 1)
+            lastMonth = 12;
+        else
+            lastMonth = month - 1 ;
+    
+        return getCategoryThisMoney(userId, lastMonth, categoryId) - getCategoryThisIntegratedMoney(userId, lastMonth, categoryId);
     }
 
     //카테고리 상세 내역 조회 - 상세 리스트
