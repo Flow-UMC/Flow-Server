@@ -46,7 +46,7 @@ public class HomeDao {
     //홈 조회 - 이번 달 통합 내역 지출
     public int getIntegratedConsumption(int userId, int month){
         try {
-            String getConsumptionQuery = "select sum(price) from (select sum(price) as price from (select integratedId, if (typeId = 1, price, -price) as price from detail where userId = ? and month = ? and isBudgetIncluded = 1) price_table group by integratedId) expend_table where price < 0";
+            String getConsumptionQuery = "select sum(price) from (select sum(price) as price from (select integratedId, if (typeId = 2, price, -price) as price from detail where userId = ? and month = ? and isBudgetIncluded = 1 and integratedId != -1) price_table group by integratedId) expend_table where price < 0";
         
             Object[] getConsumptionParams = new Object[]{userId, month};
             return this.jdbcTemplate.queryForObject(getConsumptionQuery, int.class, getConsumptionParams); 
