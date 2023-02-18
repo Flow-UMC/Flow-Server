@@ -77,18 +77,30 @@ public class HomeDao {
 
     //홈 조회 - 카테고리 별 소비 금액
     public List<Category> getCategorys(int userId, int month) {
-        String getCategorysQuery = "select categoryId, sum(price) from detail where userId = ? and month = ? group by categoryId";
+        String getCategorysQuery = "select categoryId, sum(sum_price) from (select categoryId, sum(price) as sum_price from detail where userId = ? and month = ? and typeId = 1 and integratedId = -1 and isBudgetIncluded = 1 group by categoryId union all select categoryId, -sum(price) as sum_price from (select categoryId, sum(price) as price from (select integratedId, categoryId, if (typeId = 2, price, -price) as price from detail where userId = ? and month = ? and isBudgetIncluded = 1 and integratedId != -1) price_table group by integratedId, categoryId) expend_table where price < 0 group by categoryId) tb group by categoryId";
         
-        Object[] getCategorysParams = new Object[]{userId, month};
+        Object[] getCategorysParams = new Object[]{userId, month, userId, month};
 
-        return this.jdbcTemplate.query(getCategorysQuery, 
+        try {
+            return this.jdbcTemplate.query(getCategorysQuery, 
             (rs, rowNum) -> new Category(
                 rs.getInt("categoryId"),
                 getCategoryName(userId, rs.getInt("categoryId")),
-                rs.getInt("sum(price)"),
-                (rs.getInt("sum(price)")*100/(getConsumption(userId, month)))
+                rs.getInt("sum(sum_price)"),
+                ((rs.getInt("sum(sum_price)")*100)/(getConsumption(userId, month)-getIntegratedConsumption(userId, month)))
         ),
             getCategorysParams);
+        } catch (Exception e) {
+            return this.jdbcTemplate.query(getCategorysQuery, 
+            (rs, rowNum) -> new Category(
+                rs.getInt("categoryId"),
+                getCategoryName(userId, rs.getInt("categoryId")),
+                rs.getInt("sum(sum_price)"),
+                (0)
+        ),
+            getCategorysParams);
+        }
+
     }
 
     //홈 조회 - 월 별 지출 금액
