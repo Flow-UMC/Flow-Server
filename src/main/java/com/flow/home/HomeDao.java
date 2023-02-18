@@ -31,39 +31,39 @@ public class HomeDao {
         return this.jdbcTemplate.queryForObject(getBudgetQuery, int.class, getBudgetParams);
     }
 
-    //홈 조회 - 이번 달 수입
-    public int getConsumption(int userId, int month){
-        String getConsumptionQuery = "select sum(price) from detail where userId = ? and month = ? and typeId = 1 and isBudgetIncluded = 1";
-
-        Object[] getConsumptionParams = new Object[]{userId, month};
-        return this.jdbcTemplate.queryForObject(getConsumptionQuery, int.class, getConsumptionParams); 
-    }
-
     //홈 조회 - 이번 달 지출
-    public int getExpenditure(int userId, int month){
-        String getExpenditureQuery = "select sum(price) from detail where userId = ? and month = ? and typeId = 2 and isBudgetIncluded = 1";
-
-        Object[] getExpenditureParams = new Object[]{userId, month};
-        return this.jdbcTemplate.queryForObject(getExpenditureQuery, int.class, getExpenditureParams);
-    }
-
-    //홈 조회 - 지난 달 소비 금액
-    public int getLastConsumption(int userId, int month){
+    public int getConsumption(int userId, int month){
         try {
-            String getLastConsumptionQuery = "select sum(price) from detail where userId = ? and month = ?";
+            String getConsumptionQuery = "select sum(price) from detail where userId = ? and month = ? and typeId = 1 and integratedId = -1 and isBudgetIncluded = 1";
 
-            int lastMonth;
-            if(month == 1) {
-                lastMonth = 12;
-            } else {
-                lastMonth =- 1;
-            }
-
-            Object[] getLastConsumptionParams = new Object[]{userId, lastMonth};
-            return this.jdbcTemplate.queryForObject(getLastConsumptionQuery, int.class, getLastConsumptionParams); 
+            Object[] getConsumptionParams = new Object[]{userId, month};
+            return this.jdbcTemplate.queryForObject(getConsumptionQuery, int.class, getConsumptionParams); 
         } catch (Exception e) {
             return 0;
         }
+    }
+
+    //홈 조회 - 이번 달 통합 내역 지출
+    public int getIntegratedConsumption(int userId, int month){
+        try {
+            String getConsumptionQuery = "select sum(price) from (select sum(price) as price from (select integratedId, if (typeId = 2, price, -price) as price from detail where userId = ? and month = ? and isBudgetIncluded = 1 and integratedId != -1) price_table group by integratedId) expend_table where price < 0";
+        
+            Object[] getConsumptionParams = new Object[]{userId, month};
+            return this.jdbcTemplate.queryForObject(getConsumptionQuery, int.class, getConsumptionParams); 
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    //홈 조회 - 지난 달 소비금액
+    public int getLastConsumption(int userId, int month){
+        int lastMonth;
+        if (month == 1)
+            lastMonth = 12;
+        else
+            lastMonth = month - 1 ;
+
+        return getConsumption(userId, lastMonth) - getIntegratedConsumption(userId, lastMonth);
     }
 
     //홈 조회 - 카테고리 이름 조회
@@ -77,18 +77,30 @@ public class HomeDao {
 
     //홈 조회 - 카테고리 별 소비 금액
     public List<Category> getCategorys(int userId, int month) {
-        String getCategorysQuery = "select categoryId, sum(price) from detail where userId = ? and month = ? group by categoryId";
+        String getCategorysQuery = "select categoryId, sum(sum_price) from (select categoryId, sum(price) as sum_price from detail where userId = ? and month = ? and typeId = 1 and integratedId = -1 and isBudgetIncluded = 1 group by categoryId union all select categoryId, -sum(price) as sum_price from (select categoryId, sum(price) as price from (select integratedId, categoryId, if (typeId = 2, price, -price) as price from detail where userId = ? and month = ? and isBudgetIncluded = 1 and integratedId != -1) price_table group by integratedId, categoryId) expend_table where price < 0 group by categoryId) tb group by categoryId";
         
-        Object[] getCategorysParams = new Object[]{userId, month};
+        Object[] getCategorysParams = new Object[]{userId, month, userId, month};
 
-        return this.jdbcTemplate.query(getCategorysQuery, 
+        try {
+            return this.jdbcTemplate.query(getCategorysQuery, 
             (rs, rowNum) -> new Category(
                 rs.getInt("categoryId"),
                 getCategoryName(userId, rs.getInt("categoryId")),
-                rs.getInt("sum(price)"),
-                (rs.getInt("sum(price)")*100/(getConsumption(userId, month)))
+                rs.getInt("sum(sum_price)"),
+                ((rs.getInt("sum(sum_price)")*100)/(getConsumption(userId, month)-getIntegratedConsumption(userId, month)))
         ),
             getCategorysParams);
+        } catch (Exception e) {
+            return this.jdbcTemplate.query(getCategorysQuery, 
+            (rs, rowNum) -> new Category(
+                rs.getInt("categoryId"),
+                getCategoryName(userId, rs.getInt("categoryId")),
+                rs.getInt("sum(sum_price)"),
+                (0)
+        ),
+            getCategorysParams);
+        }
+
     }
 
     //홈 조회 - 월 별 지출 금액
@@ -117,31 +129,41 @@ public class HomeDao {
     }   
 
     //카테고리 상세 내역 조회 - 이번 달 카테고리 지출
-    public int getCategoryThisMoney(int userId, int month, int categoryId) {
-        String getCategoryThisMoneyQuery = "select sum(price) from detail where userId = ? and month = ? and categoryId = ?";
+    public int getCategoryThisMoney(int userId, int month, int categoryId){
+        try {
+            String getConsumptionQuery = "select sum(price) from detail where userId = ? and month = ? and categoryId = ? and typeId = 1 and integratedId = -1 and isBudgetIncluded = 1";
+    
+            Object[] getConsumptionParams = new Object[]{userId, month, categoryId};
+            return this.jdbcTemplate.queryForObject(getConsumptionQuery, int.class, getConsumptionParams); 
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+
+    //카테고리 상세 내역 조회 - 이번 달 카테고리 통합 내역 지출
+    public int getCategoryThisIntegratedMoney(int userId, int month, int categoryId) {
+        try {
+            String getCategoryThisMoneyQuery = "select sum(price) from (select sum(price) as price from (select integratedId, if (typeId = 2, price, -price) as price from detail where userId = ? and month = ? and categoryId = ? and isBudgetIncluded = 1 and integratedId != -1) price_table group by integratedId) expend_table where price < 0";
 
         Object[] getCategoryThisMoneyParams = new Object[]{userId, month, categoryId};
 
         return this.jdbcTemplate.queryForObject(getCategoryThisMoneyQuery, int.class, getCategoryThisMoneyParams);
-    }
-
-    //카테고리 상세 내역 조회 - 지난 달 카테고리 지출
-    public int getCategoryLastMoney(int userId, int month, int categoryId) {
-        try {
-            String getCategoryLastMoneyQuery = "select sum(price) from detail where userId = ? and month = ? and categoryId = ?";
-        
-        int lastMonth;
-        if(month == 1) {
-            lastMonth = 12;
-        } else {
-            lastMonth =- 1;
-        }
-
-        Object[] getCategoryLastMoneyParams = new Object[]{userId, lastMonth, categoryId};
-        return this.jdbcTemplate.queryForObject(getCategoryLastMoneyQuery, int.class, getCategoryLastMoneyParams);
-    } catch (Exception e) {
+        } catch (Exception e) {
             return 0;
         }
+    
+    }
+    
+    //카테고리 상세 내역 조회  - 지난 달 카테고리 소비 금액
+    public int getCategoryLastConsumption(int userId, int month, int categoryId){
+        int lastMonth;
+        if (month == 1)
+            lastMonth = 12;
+        else
+            lastMonth = month - 1 ;
+    
+        return getCategoryThisMoney(userId, lastMonth, categoryId) - getCategoryThisIntegratedMoney(userId, lastMonth, categoryId);
     }
 
     //카테고리 상세 내역 조회 - 상세 리스트

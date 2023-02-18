@@ -22,7 +22,7 @@ public class CategoryDao {
 
     //카테고리 추가
     public int createCategory(int userId, PostCategoryReq postCategoryReq) {
-        String postCategoryQuery = "insert into category (categoryId, userId, name, typeId, isUserCreated) values ((select ifnull(max(categoryId)+1,1) from category c),?,?,?,1)";
+        String postCategoryQuery = "insert into category (categoryId, userId, name, typeId, isUserCreated) values ((select ifnull(max(categoryId)+1,1) from category c),?,?,?,0)";
         Object[] postCategoryParams = new Object[]{userId, postCategoryReq.getName(), postCategoryReq.getTypeId()};
 
         return this.jdbcTemplate.update(postCategoryQuery, postCategoryParams);
