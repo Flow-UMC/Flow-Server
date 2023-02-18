@@ -27,7 +27,7 @@ public class HomeProvider {
     public GetHomeRes getHome(int userId, int month) throws BaseException{
         try {
             int budget = homeDao.getBudget(userId, month);
-            int consumption = homeDao.getConsumption(userId, month) - homeDao.getExpenditure(userId, month);
+            int consumption = homeDao.getConsumption(userId, month) - homeDao.getIntegratedConsumption(userId, month);
             int lastConsumption = homeDao.getLastConsumption(userId, month);
             int percent = (consumption*100/budget);
             List<Category> categorys = homeDao.getCategorys(userId, month);

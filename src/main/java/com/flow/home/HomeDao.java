@@ -31,20 +31,28 @@ public class HomeDao {
         return this.jdbcTemplate.queryForObject(getBudgetQuery, int.class, getBudgetParams);
     }
 
-    //홈 조회 - 이번 달 수입
+    //홈 조회 - 이번 달 지출
     public int getConsumption(int userId, int month){
-        String getConsumptionQuery = "select sum(price) from detail where userId = ? and month = ? and typeId = 1 and isBudgetIncluded = 1";
+        try {
+            String getConsumptionQuery = "select sum(price) from detail where userId = ? and month = ? and typeId = 1 and integratedId = -1 and isBudgetIncluded = 1";
 
-        Object[] getConsumptionParams = new Object[]{userId, month};
-        return this.jdbcTemplate.queryForObject(getConsumptionQuery, int.class, getConsumptionParams); 
+            Object[] getConsumptionParams = new Object[]{userId, month};
+            return this.jdbcTemplate.queryForObject(getConsumptionQuery, int.class, getConsumptionParams); 
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
-    //홈 조회 - 이번 달 지출
-    public int getExpenditure(int userId, int month){
-        String getExpenditureQuery = "select sum(price) from detail where userId = ? and month = ? and typeId = 2 and isBudgetIncluded = 1";
-
-        Object[] getExpenditureParams = new Object[]{userId, month};
-        return this.jdbcTemplate.queryForObject(getExpenditureQuery, int.class, getExpenditureParams);
+    //홈 조회 - 이번 달 통합 내역 지출
+    public int getIntegratedConsumption(int userId, int month){
+        try {
+            String getConsumptionQuery = "select sum(price) from (select sum(price) as price from (select integratedId, if (typeId = 1, price, -price) as price from detail where userId = ? and month = ? and isBudgetIncluded = 1) price_table group by integratedId) expend_table where price < 0";
+        
+            Object[] getConsumptionParams = new Object[]{userId, month};
+            return this.jdbcTemplate.queryForObject(getConsumptionQuery, int.class, getConsumptionParams); 
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     //홈 조회 - 지난 달 소비 금액
