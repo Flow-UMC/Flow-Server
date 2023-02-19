@@ -78,7 +78,7 @@ public class HomeDao {
 
     //홈 조회 - 카테고리 별 소비 금액
     public List<Category> getCategorys(int userId, int month) {
-        String getCategorysQuery = "select categoryId, sum(sum_price) from (select categoryId, sum(price) as sum_price from detail where userId = ? and month = ? and typeId = 1 and integratedId = -1 and isBudgetIncluded = 1 group by categoryId union all select categoryId, -sum(price) as sum_price from (select categoryId, sum(price) as price from (select integratedId, categoryId, if (typeId = 2, price, -price) as price from detail where userId = ? and month = ? and isBudgetIncluded = 1 and integratedId != -1) price_table group by integratedId, categoryId) expend_table where price < 0 group by categoryId) tb group by categoryId";
+        String getCategorysQuery = "select categoryId, sum(price) as price from ( select categoryId, price from detail where userId = ? and month = ? and typeId = 1 and integratedId = -1 and isBudgetIncluded = 1 union all select detail.categoryId, -b.price from detail right join (select * from (select integratedId, sum(price) as price from (select integratedId, if (typeId = 2, price, -price) as price from detail where userId = ? and month = ? and isBudgetIncluded = 1 and integratedId != -1 ) tb group by integratedId) tb_next where price < 0 ) b on detail.detailId = b.integratedId) a group by categoryId order by categoryId;";
         
         Object[] getCategorysParams = new Object[]{userId, month, userId, month};
 
@@ -87,8 +87,8 @@ public class HomeDao {
             (rs, rowNum) -> new Category(
                 rs.getInt("categoryId"),
                 getCategoryName(userId, rs.getInt("categoryId")),
-                rs.getInt("sum(sum_price)"),
-                ((rs.getInt("sum(sum_price)")*100)/(getConsumption(userId, month)-getIntegratedConsumption(userId, month)))
+                rs.getInt("price"),
+                ((rs.getInt("price")*100)/(getConsumption(userId, month)-getIntegratedConsumption(userId, month)))
         ),
             getCategorysParams);
         } catch (Exception e) {
@@ -96,7 +96,7 @@ public class HomeDao {
             (rs, rowNum) -> new Category(
                 rs.getInt("categoryId"),
                 getCategoryName(userId, rs.getInt("categoryId")),
-                rs.getInt("sum(sum_price)"),
+                rs.getInt("price"),
                 (0)
         ),
             getCategorysParams);
