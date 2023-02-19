@@ -25,11 +25,11 @@ public class HomeDao {
     }
 
     //예산 시작일 조회
-    public String getBudgetStartDay(int userId) {
+    public int getBudgetStartDay(int userId) {
         String getBudgetStartDayQuery = "select startDay from budget where userId = ?";
 
         Object[] getBudgetStartDayParams = new Object[]{userId};
-        return this.jdbcTemplate.queryForObject(getBudgetStartDayQuery, String.class, getBudgetStartDayParams);
+        return this.jdbcTemplate.queryForObject(getBudgetStartDayQuery, int.class, getBudgetStartDayParams);
     }
 
     //홈 조회 - 예산
