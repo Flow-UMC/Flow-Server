@@ -24,6 +24,14 @@ public class HomeDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    //예산 시작일 조회
+    public String getBudgetStartDay(int userId) {
+        String getBudgetStartDayQuery = "select startDay from budget where userId = ?";
+
+        Object[] getBudgetStartDayParams = new Object[]{userId};
+        return this.jdbcTemplate.queryForObject(getBudgetStartDayQuery, String.class, getBudgetStartDayParams);
+    }
+
     //홈 조회 - 예산
     public int getBudget(int userId, int month) {
         String getBudgetQuery = "select price from budget where userId = ?";
@@ -78,7 +86,7 @@ public class HomeDao {
 
     //홈 조회 - 카테고리 별 소비 금액
     public List<Category> getCategorys(int userId, int month) {
-        String getCategorysQuery = "select categoryId, sum(price) as price from ( select categoryId, price from detail where userId = ? and month = ? and typeId = 1 and integratedId = -1 and isBudgetIncluded = 1 union all select detail.categoryId, -b.price from detail right join (select * from (select integratedId, sum(price) as price from (select integratedId, if (typeId = 2, price, -price) as price from detail where userId = ? and month = ? and isBudgetIncluded = 1 and integratedId != -1 ) tb group by integratedId) tb_next where price < 0 ) b on detail.detailId = b.integratedId) a group by categoryId order by categoryId;";
+        String getCategorysQuery = "select categoryId, sum(price) as price from ( select categoryId, price from detail where userId = ? and month = ? and typeId = 1 and integratedId = -1 and isBudgetIncluded = 1 union all select detail.categoryId, -b.price from detail right join (select * from (select integratedId, sum(price) as price from (select integratedId, if (typeId = 2, price, -price) as price from detail where userId = ? and month = ? and isBudgetIncluded = 1 and integratedId != -1 ) tb group by integratedId) tb_next where price < 0 ) b on detail.detailId = b.integratedId) a group by categoryId order by categoryId";
         
         Object[] getCategorysParams = new Object[]{userId, month, userId, month};
 
