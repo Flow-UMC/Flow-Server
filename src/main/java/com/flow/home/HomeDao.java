@@ -42,16 +42,10 @@ public class HomeDao {
 
      //홈 조회 - 이번 달 지출
      public int getConsumption(int userId, int month){
-        int nextMonth;
-        if(month == 12) {
-            nextMonth = 1;
-        } else {
-            nextMonth = month + 1;
-        }
         try {
             String getConsumptionQuery = "select sum(price) from (select * from detail where month = ? and day >= ? or month = ? and day < ?) tb where userId = ? and typeId = 1 and integratedId = -1 and isBudgetIncluded = 1";
 
-            Object[] getConsumptionParams = new Object[]{month, getBudgetStartDay(userId), nextMonth, getBudgetStartDay(userId), userId};
+            Object[] getConsumptionParams = new Object[]{month, getBudgetStartDay(userId), getNextMonth(month), getBudgetStartDay(userId), userId};
             return this.jdbcTemplate.queryForObject(getConsumptionQuery, int.class, getConsumptionParams); 
         } catch (Exception e) {
             return 0;
@@ -61,16 +55,10 @@ public class HomeDao {
 
     //홈 조회 - 이번 달 통합 내역 지출
     public int getIntegratedConsumption(int userId, int month){
-        int nextMonth;
-        if(month == 12) {
-            nextMonth = 1;
-        } else {
-            nextMonth = month + 1;
-        }
         try {
             String getConsumptionQuery = "select sum(price) from (select sum(price) as price from (select integratedId, if (typeId = 2, price, -price) as price from (select * from detail where month = ? and day >= ? or month = ? and day < ?) tb where userId = ? and isBudgetIncluded = 1 and integratedId != -1) price_table group by integratedId) expend_table where price < 0";
         
-            Object[] getConsumptionParams = new Object[]{month, getBudgetStartDay(userId), nextMonth, getBudgetStartDay(userId), userId};
+            Object[] getConsumptionParams = new Object[]{month, getBudgetStartDay(userId), getNextMonth(month), getBudgetStartDay(userId), userId};
             return this.jdbcTemplate.queryForObject(getConsumptionQuery, int.class, getConsumptionParams); 
         } catch (Exception e) {
             return 0;
@@ -99,16 +87,9 @@ public class HomeDao {
 
     //홈 조회 - 카테고리 별 소비 금액
     public List<Category> getCategorys(int userId, int month) {
-        int nextMonth;
-        if(month == 12) {
-            nextMonth = 1;
-        } else {
-            nextMonth = month + 1;
-        }
-
         String getCategorysQuery = "select categoryId, sum(price) as price from ( select categoryId, price from (select * from detail where month = ? and day >= ? or month = ? and day < ?) date_tb where userId = ? and typeId = 1 and integratedId = -1 and isBudgetIncluded = 1 union all select detail.categoryId, -b.price from detail right join (select * from (select integratedId, sum(price) as price from (select integratedId, if (typeId = 2, price, -price) as price from (select * from detail where month = ? and day >= ? or month = ? and day < ?) date_tb where userId = ? and isBudgetIncluded = 1 and integratedId != -1 ) tb group by integratedId) tb_next where price < 0 ) b on detail.detailId = b.integratedId) a group by categoryId order by categoryId";
         
-        Object[] getCategorysParams = new Object[]{month, getBudgetStartDay(userId), nextMonth, getBudgetStartDay(userId), userId, month, getBudgetStartDay(userId), nextMonth, getBudgetStartDay(userId), userId};
+        Object[] getCategorysParams = new Object[]{month, getBudgetStartDay(userId), getNextMonth(month), getBudgetStartDay(userId), userId, month, getBudgetStartDay(userId), getNextMonth(month), getBudgetStartDay(userId), userId};
 
         try {
             return this.jdbcTemplate.query(getCategorysQuery, 
@@ -164,16 +145,10 @@ public class HomeDao {
 
     //카테고리 상세 내역 조회 - 이번 달 카테고리 지출
     public int getCategoryThisMoney(int userId, int month, int categoryId){
-        int nextMonth;
-        if(month == 12) {
-            nextMonth = 1;
-        } else {
-            nextMonth = month + 1;
-        }
         try {
             String getConsumptionQuery = "select price from( select categoryId, sum(price) as price from ( select categoryId, price from (select * from detail where month = ? and day >= ? or month = ? and day < ?) date_tb where userId = ? and typeId = 1 and integratedId = -1 and isBudgetIncluded = 1 union all select detail.categoryId, -b.price from detail right join (select * from (select integratedId, sum(price) as price from (select integratedId, if (typeId = 2, price, -price) as price from (select * from detail where month = ? and day >= ? or month = ? and day < ?) date_tb where userId = ? and isBudgetIncluded = 1 and integratedId != -1 ) tb group by integratedId) tb_next where price < 0 ) b on detail.detailId = b.integratedId) a group by categoryId order by categoryId ) category_tb where categoryId = ?";
     
-            Object[] getConsumptionParams = new Object[]{month, getBudgetStartDay(userId), nextMonth, getBudgetStartDay(userId), userId, month, getBudgetStartDay(userId), nextMonth, getBudgetStartDay(userId), userId, categoryId};
+            Object[] getConsumptionParams = new Object[]{month, getBudgetStartDay(userId), getNextMonth(month), getBudgetStartDay(userId), userId, month, getBudgetStartDay(userId), getNextMonth(month), getBudgetStartDay(userId), userId, categoryId};
             return this.jdbcTemplate.queryForObject(getConsumptionQuery, int.class, getConsumptionParams); 
         } catch (Exception e) {
             return 0;
@@ -193,33 +168,35 @@ public class HomeDao {
 
     //카테고리 상세 내역 조회 - 상세 리스트
     public List<CategoryDetail> getCategoryDetails(int userId, int month, int categoryId) {
+        try {
+            String getCategoryDetailListQuery = "select detailId, day, time, price, shop, memo from (select * from detail where month = ? and day >= ? or month = ? and day < ?) tb where userId = ? and categoryId = ?";
+
+            Object[] getCategoryDetailListParams = new Object[]{month, getBudgetStartDay(userId), getNextMonth(month), getBudgetStartDay(userId), userId, categoryId};
+
+            return this.jdbcTemplate.query(getCategoryDetailListQuery, 
+                (rs, rowNum) -> new CategoryDetail(
+                    rs.getInt("detailId"),
+                    rs.getString("day"),
+                    rs.getString("time"),
+                    rs.getInt("price"),
+                    rs.getString("shop"),
+                    rs.getString("memo")
+                ),
+                getCategoryDetailListParams);
+
+        } catch (Exception e) {
+                return null;
+        }
+    }
+
+    public int getNextMonth(int month) {
         int nextMonth;
         if(month == 12) {
             nextMonth = 1;
         } else {
             nextMonth = month + 1;
         }
-
-        try {
-            
-        
-        String getCategoryDetailListQuery = "select detailId, day, time, price, shop, memo from (select * from detail where month = ? and day >= ? or month = ? and day < ?) tb where userId = ? and categoryId = ?";
-
-        Object[] getCategoryDetailListParams = new Object[]{month, getBudgetStartDay(userId), nextMonth, getBudgetStartDay(userId), userId, categoryId};
-
-        return this.jdbcTemplate.query(getCategoryDetailListQuery, 
-            (rs, rowNum) -> new CategoryDetail(
-                rs.getInt("detailId"),
-                rs.getString("day"),
-                rs.getString("time"),
-                rs.getInt("price"),
-                rs.getString("shop"),
-                rs.getString("memo")
-            ),
-            getCategoryDetailListParams);
-
-        } catch (Exception e) {
-            return null;
-        }
+        return nextMonth;
     }
+
 }
