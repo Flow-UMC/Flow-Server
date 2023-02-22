@@ -1,10 +1,14 @@
 # 📜Flow-Server
+제대로 기록하는 당신의 지출 흐름, Flow 의 Server Repository입니다.
+
+![KakaoTalk_20230215_130843885](https://user-images.githubusercontent.com/100260416/220561044-df2a16d8-2180-43dd-8e75-d3056265c415.png)
 
 ## 💡 팀원 소개
 | Name    | [류서영](https://github.com/seoyoee) | [이다운](https://github.com/dawoon08) | [조윤진](https://github.com/cyjadela) | [최윤지](https://github.com/choiyounji) |
 | ------- | :---: | :---: | :---: | :---: |
 | Profile |사진|사진|사진| ![KakaoTalk_20230222_134128184](https://user-images.githubusercontent.com/100260416/220534231-c01cad9b-7a63-433d-b114-33378163978c.png)|
 |  ROLE   | 역할 | 역할 | 역할 | [내역] 내역 조회, 추가, 삭제, 통합 기능<br/> [키워드] 키워드 조회, 추가, 삭제, 수정 기능<br/> |
+
 
 ## 💡 API 명세서
 ### LogIn
@@ -60,6 +64,7 @@
 | POST | 키워드 추가 |/keywords/{userId}|
 | DELETE | 키워드 삭제 |/keywords/{userId}/{keywordId}|
 | PATCH | 키워드 수정 |/keywords/{userId}/{keywordId}|
+
 
 ## 💡 폴더구조
 ```
