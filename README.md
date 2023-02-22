@@ -19,7 +19,7 @@
 
 ### Detail
 | Method    | Description | URI |
-| ------- | :---: | --- |
+| ------- | --- | --- |
 | GET |전체 거래내역 조회|/details/{userId}?year=all&month=all&page=1|
 | POST | 거래내역 추가 |/details/{userId}|
 | DELETE |거래내역 삭제|/details/{userId}|
@@ -27,7 +27,7 @@
 
 ### Keyword
 | Method    | Description | URI |
-| ------- | :---: | --- |
+| ------- | --- | --- |
 | GET |키워드 조회|/keywords/{userId}|
 | POST | 키워드 추가 |/keywords/{userId}|
 | DELETE | 키워드 삭제 |/keywords/{userId}/{keywordId}|
