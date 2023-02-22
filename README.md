@@ -17,8 +17,8 @@
 ### Calendar
 | Method    | Description | URI |
 | ------- | --- | --- |
-| GET |날짜별 총 지출, 수입 금액 조회|calendar/{year}/{month}|
-| GET |날짜별 전체 내역 조회|calendar/{year}/{month}/{date}|
+| GET |날짜별 총 지출, 수입 금액 조회|/calendar/{year}/{month}|
+| GET |날짜별 전체 내역 조회|/calendar/{year}/{month}/{date}|
 
 ### Setting
 | Method    | Description | URI |
