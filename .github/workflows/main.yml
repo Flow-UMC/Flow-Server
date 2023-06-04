@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  S3_BUCKET_NAME: umc-flow
+  S3_BUCKET_NAME: flow2-deploy
   RESOURCE_PATH: ./src/main/resources/application.yml
 
 jobs:
@@ -76,7 +76,7 @@ jobs:
         aws-region: ap-northeast-2
 
     - name: Upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./flow.zip s3://umc-flow/
+      run: aws s3 cp --region ap-northeast-2 ./flow.zip s3://flow2-deploy/
     
     # Deploy
     - name: Deploy
@@ -87,5 +87,5 @@ jobs:
         --application-name flow
         --deployment-group-name flow-group
         --file-exists-behavior OVERWRITE 
-        --s3-location bucket=umc-flow,bundleType=zip,key=flow.zip 
+        --s3-location bucket=flow2-deploy,bundleType=zip,key=flow.zip 
         --region ap-northeast-2
